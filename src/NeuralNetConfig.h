@@ -18,6 +18,7 @@ public:
 	:numIterations(_numIterations)
 	{};
 
+	//Add a new layer object to the Neural Network
 	addLayer(FCConfig* fcl) {layerConf.push_back(fcl);};
 	addLayer(CNNConfig* cnnl) {layerConf.push_back(cnnl);};
 	addLayer(ChameleonCNNConfig* ccnnl) {layerConf.push_back(ccnnl);};
