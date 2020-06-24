@@ -37,9 +37,11 @@ void parseInputs(int argc, char* argv[])
 	//If this fails, change functions in tools (divide and multiply ones)
 	assert((sizeof(double) == sizeof(myType)) && "sizeof(double) != sizeof(myType)");
 
+	//End execution if number of arguments is less than 10
 	if (argc < 10) 
 		print_usage(argv[0]);
 
+	//Set the number of parties based on the type of execution
 	if (strcmp(argv[1], "STANDALONE") == 0)
 		NUM_OF_PARTIES = 1;
 	else if (strcmp(argv[1], "3PC") == 0)
@@ -47,8 +49,10 @@ void parseInputs(int argc, char* argv[])
 	else if (strcmp(argv[1], "4PC") == 0)
 		NUM_OF_PARTIES = 4;
 
+	//Set partynum for the current party
 	partyNum = atoi(argv[2]);
 	
+	//Partynum has to be between 0-3
 	if (partyNum < 0 or partyNum > 4) 
 		print_usage(argv[0]);
 
@@ -68,7 +72,7 @@ void initializeMPC()
 }
 
 
-
+//Read data and labels from files containing training and testing data and labels and put them min vectors
 void loadData(char* filename_train_data, char* filename_train_labels, 
 			  char* filename_test_data, char* filename_test_labels)
 {
@@ -120,10 +124,13 @@ void readMiniBatch(NeuralNetwork* net, string phase)
 		for (int i = 0; i < LAST_LAYER_SIZE * MINI_BATCH_SIZE; ++i)
 			net->outputData[i] = trainLabels[(trainLabelsBatchCounter + i)%t];
 
+		//LAYER0 represents the number of inputs for each data point
 		trainDataBatchCounter += LAYER0 * MINI_BATCH_SIZE;
+		//LAST_LAYER_SIZE represents the number of labels
 		trainLabelsBatchCounter += LAST_LAYER_SIZE * MINI_BATCH_SIZE;
 	}
 
+	//Prevents overflow of the batch counters
 	if (trainDataBatchCounter > s)
 		trainDataBatchCounter -= s;
 
@@ -167,6 +174,7 @@ void train(NeuralNetwork* net, NeuralNetConfig* config)
 		// cout << "----------------------------------" << endl;  
 		// cout << "Iteration " << i << endl;
 		
+		//Read a batch of data to process
 		readMiniBatch(net, "TRAINING");
 
 		// start_m();
