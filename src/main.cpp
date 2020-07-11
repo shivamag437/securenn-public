@@ -150,8 +150,6 @@ int main(int argc, char** argv)
 	cout << "----------------------------------" << endl << endl;  
 
 
-//SecureNN+
-	// testexp();
 /****************************** CLEAN-UP ******************************/ 
 	delete aes_common;
 	delete aes_indep;
