@@ -149,6 +149,8 @@ int main(int argc, char** argv)
 	cout << NUM_ITERATIONS << " iterations, " << whichNetwork << ", batch size " << MINI_BATCH_SIZE << endl;
 	cout << "----------------------------------" << endl << endl;  
 
+//SecureNN+
+	testexp();
 
 /****************************** CLEAN-UP ******************************/ 
 	delete aes_common;
