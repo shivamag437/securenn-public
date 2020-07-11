@@ -72,7 +72,7 @@ void initializeMPC()
 }
 
 
-//Read data and labels from files containing training and testing data and labels and put them min vectors
+//Read data and labels from files containing training and testing data and labels and put them in vectors
 void loadData(char* filename_train_data, char* filename_train_labels, 
 			  char* filename_test_data, char* filename_test_labels)
 {

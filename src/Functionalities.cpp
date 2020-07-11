@@ -172,10 +172,14 @@ void funcMatMulMPC(const vector<myType> &a, const vector<myType> &b, vector<myTy
 			populateRandomVector<myType>(B2, size_right, "b_2", "POSITIVE");
 			populateRandomVector<myType>(C1, size, "c_1", "POSITIVE");
 
+			//A1 and A2 act as additive shares of A
 			addVectors<myType>(A1, A2, A, size_left);
+			//B1 and B2 act as additive shares of B
 			addVectors<myType>(B1, B2, B, size_right);
 
+			//C=A*B
 			matrixMultEigen(A, B, C, rows, common_dim, columns, 0, 0);
+			//C1 and C2 act as additive shares of C
 			subtractVectors<myType>(C, C1, C2, size);
 
 			// splitIntoShares(C, C1, C2, size);
@@ -193,6 +197,7 @@ void funcMatMulMPC(const vector<myType> &a, const vector<myType> &b, vector<myTy
 
 			if (partyNum == PARTY_A)
 			{
+				//Generate the same matrices as the one labelled "a_1", "b_1" and "c_1" in the helper server
 				populateRandomVector<myType>(A, size_left, "a_1", "POSITIVE");
 				populateRandomVector<myType>(B, size_right, "b_1", "POSITIVE");
 				populateRandomVector<myType>(C, size, "c_1", "POSITIVE");
@@ -200,6 +205,7 @@ void funcMatMulMPC(const vector<myType> &a, const vector<myType> &b, vector<myTy
 
 			if (partyNum == PARTY_B)
 			{
+				//Generate the same matrices as the one labelled "a_2", "b_2" and in the helper server
 				populateRandomVector<myType>(A, size_left, "a_2", "POSITIVE");
 				populateRandomVector<myType>(B, size_right, "b_2", "POSITIVE");
 				receiveVector<myType>(C, PARTY_C, size);
