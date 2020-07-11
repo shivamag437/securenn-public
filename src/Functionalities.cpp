@@ -2151,8 +2151,8 @@ void exponentiation(vector<myType> &x, vector<myType> &c)
 {
 	if (THREE_PC)
 	{
-		vector<myType> c0(1);
-		vector<myType> c1(1);
+		vector<myType> c0 = {1};
+		vector<myType> c1 = {1};
 		if(PRIMARY)
 		{
 			int z;
@@ -2161,9 +2161,9 @@ void exponentiation(vector<myType> &x, vector<myType> &c)
 			{
 				vector<myType> a0, a1, b0;
 				
-				a0[0] = rand();
+				a0.push_back(rand());
 				z = int(z_dash*10*10*10*10*10);
-				a1[0] = z - a0[0];
+				a1.push_back(z - a0[0]);
 				sendVector<myType>(a1, PARTY_B, 1);
 				receiveVector<myType>(b0, PARTY_B, 1);
 				funcMatMulMPC(a0, b0, c0, 1, 1, 1, 0, 0);
@@ -2172,18 +2172,19 @@ void exponentiation(vector<myType> &x, vector<myType> &c)
 			{
 				vector<myType> a1, b0, b1;
 				
-				b1[0] = rand();
+				b1.push_back(rand());
 				z = int(z_dash*10*10*10*10*10);
-				b0[0] = z - b1[0];
+				b0.push_back(z - b1[0]);
 				sendVector<myType>(b0, PARTY_A, 1);
 				receiveVector<myType>(a1, PARTY_A, 1);
 				funcMatMulMPC(a1, b1, c1, 1, 1, 1, 0, 0);
 			}
 			if(HELPER)
 			{
+				vector<myType> a0, b0;
 				// vector<myType> a2(1, 1);
 				// vector<myType> b2(1, 1);
-				vector<myType> c2(1);
+				vector<myType> c2 = {1};
 				funcMatMulMPC(a0, b0, c2, 1, 1, 1, 0, 0);	
 			}
 		}
@@ -2194,7 +2195,8 @@ void testexp()
 {
 	vector<myType> c;
 	vector<myType> x;
-	x[0] = 1;
+	x.push_back(1);
+	cout<<"x[0]: "<<x[0]<<"\n";
 	
 	exponentiation(x, c);
 	if (partyNum==PARTY_A)

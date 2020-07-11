@@ -9,7 +9,7 @@ HEADER_FILES       = $(wildcard src/*.h)
 # FLAGS := -g -O0 -w -std=c++11 -pthread -msse4.1 -maes -msse2 -mpclmul -fpermissive -fpic
 FLAGS := -O3 -w -std=c++11 -pthread -msse4.1 -maes -msse2 -mpclmul -fpermissive -fpic
 LIBS := -lcrypto -lssl
-OBJ_INCLUDES := -I 'lib_eigen/' -I 'util/Miracl/' -I 'util/'
+OBJ_INCLUDES := -I 'lib_eigen/' -I 'util/Miracl/' -I 'util/' -g
 BMR_INCLUDES := $($(OBJ_INCLUDES), -L./)
 
 
@@ -86,7 +86,7 @@ defFile: BMRPassive.out
 abcTerminal: BMRPassive.out
 	./BMRPassive.out 3PC 2 files/parties_localhost files/keyC files/keyCD files/data/mnist_data_8_AC files/data/mnist_labels_8_AC files/data/mnist_data_8_AC files/data/mnist_labels_8_AC >/dev/null &
 	./BMRPassive.out 3PC 1 files/parties_localhost files/keyB files/keyAB files/data/mnist_data_8_BD files/data/mnist_labels_8_BD files/data/mnist_data_8_BD files/data/mnist_labels_8_BD >/dev/null &
-	./BMRPassive.out 3PC 0 files/parties_localhost files/keyA files/keyAB files/data/mnist_data_8_AC files/data/mnist_labels_8_AC files/data/mnist_data_8_AC files/data/mnist_labels_8_AC 
+	gdb --args BMRPassive.out 3PC 0 files/parties_localhost files/keyA files/keyAB files/data/mnist_data_8_AC files/data/mnist_labels_8_AC files/data/mnist_data_8_AC files/data/mnist_labels_8_AC 
 	@echo "Execution completed"
 
 defTerminal: BMRPassive.out
