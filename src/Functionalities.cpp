@@ -4,6 +4,8 @@
 #include <algorithm>    // std::rotate
 #include <thread>
 #include <math.h>
+#include<time.h> 
+#include <stdlib.h>
 using namespace std;
 
 
@@ -2148,16 +2150,21 @@ void testMaxPoolDerivative(size_t p_range, size_t q_range, size_t px, size_t py,
 }
 
 // SecureNN+
+
+// uint64_t trunc10(uint64_t t)
+// {
+// 	itoa()
+// }
+
 void exponentiation(vector<myType> &x, vector<myType> &c)
 {
 	if (THREE_PC)
 	{
-		vector<myType> c0(1), c1(1);
 		if(PRIMARY)
 		{
 			int z;
-			float p = x[0]/pow(10,5);
-			float z_dash = exp(p);
+			double p = x[0]/pow(10,10);
+			double z_dash = exp(p);
 			cout <<"Value of z'= "<< z_dash << endl;
 			if(partyNum == PARTY_A)
 			{
@@ -2166,7 +2173,7 @@ void exponentiation(vector<myType> &x, vector<myType> &c)
 				a0[0] = rand() % 10000 + 100;
 				// a0.push_back(rand() % 10000 + 100);
 				cout<<"Here, a0 = "<<a0[0]<<endl;
-				z = int(z_dash*10*10*10*10*10);
+				z = int(z_dash*pow(10,10));
 				cout<<"z = "<<z<<endl;
 				a1[0] = (z - a0[0]);
 				cout<<"Here, a1 = "<<a1[0]<<endl;
@@ -2174,20 +2181,20 @@ void exponentiation(vector<myType> &x, vector<myType> &c)
 				receiveVector<myType>(ref(b0), adversary(partyNum), 1);
 				cout<<"I am party-A and my b0: "<<b0[0]<<endl;
 
-				funcMatMulMPC(a0, b0, c0, 1, 1, 1, 0, 0);
+				funcMatMulMPC(a0, b0, c, 1, 1, 1, 0, 0);
 			}
 			if(partyNum == PARTY_B)
 			{
 				vector<myType> a1(1,1), b0(1,1), b1(1,1);
-				b1[0] = (rand() % 10000 + 100);
+				b1[0] = rand() % 10000 + 100;
 				cout<<"Here, b1 = "<<b1[0]<<endl;
-				z = int(z_dash*10*10*10*10*10);
+				z = int(z_dash*pow(10,10));
 				b0[0] = (z - b1[0]);
 				cout<<"Here, b0 = "<<b0[0]<<endl;
 				receiveVector<myType>(ref(a1), adversary(partyNum), 1);
 				sendVector<myType>(ref(b0), adversary(partyNum), 1);
-
-				funcMatMulMPC(a1, b1, c1, 1, 1, 1, 0, 0);
+				cout<<"Here, a1 = "<<a1[0]<<endl;
+				funcMatMulMPC(a1, b1, c, 1, 1, 1, 0, 0);
 			}
 			if(HELPER)
 			{
@@ -2196,24 +2203,26 @@ void exponentiation(vector<myType> &x, vector<myType> &c)
 				funcMatMulMPC(a2, b2, c2, 1, 1, 1, 0, 0);	
 			}
 		}
-		addVectors<myType>(ref(c0), ref(c1), ref(c), 1);
-		cout<<"added vectors c0+c1 = "<<c[0]<<endl;
-		
 	}
 }
 void testexp(vector<myType> &c, vector<myType> &x)
 {	
 	exponentiation(x, c);
-	// if (partyNum == PARTY_A)
-	// {
-	// 	vector<myType> temp;
-	// 	int v;
-	// 	receiveVector<myType>(temp, partner(partyNum), 1);
-	// 	v = c[0] + temp[0];
-	// 	cout<<"\nOutput from exponentiation function: "<<v<<endl;
-	// }
-	// if (partyNum==PARTY_B)
-	// {
-	// 	sendVector<myType>(c, partner(partyNum), 1);
-	// }
+	// uint64_t C = trunc10(c[0]);
+	// c[0] = C;
+	if (partyNum == PARTY_A)
+	{
+		vector<myType> temp(1);
+		uint64_t v;
+		receiveVector<myType>(ref(temp), adversary(partyNum), 1);
+		cout<<"temp  = "<<temp[0]<<endl;
+		cout<<"c  = "<<c[0]<<endl;
+		v = c[0] + temp[0];
+		// cout<<"v = "<<v<<endl;
+		cout<<"\nOutput from exponentiation function: "<<v<<endl;
+	}
+	if (partyNum==PARTY_B) 
+	{
+		sendVector<myType>(c, adversary(partyNum), 1);
+	}
 }

@@ -154,7 +154,7 @@ int main(int argc, char** argv)
 	//SecureNN+
 	vector<myType> c(1);
 	vector<myType> x(1);
-	x[0] = 100000;
+	x[0] = 10000000000;
 	cout<<"Value of x: "<<x[0]<<endl;
 	testexp(c, x);
 
