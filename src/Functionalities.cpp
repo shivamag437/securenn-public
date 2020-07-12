@@ -2170,8 +2170,8 @@ void exponentiation(vector<myType> &x, vector<myType> &c)
 				cout<<"z = "<<z<<endl;
 				a1[0] = (z - a0[0]);
 				cout<<"Here, a1 = "<<a1[0]<<endl;
-				// sendVector<myType>(a1, partner(partyNum), 1);
-				receiveVector<myType>(b0, partner(partyNum), 1);
+				sendVector<myType>(ref(a1), adversary(partyNum), 1);
+				receiveVector<myType>(ref(b0), adversary(partyNum), 1);
 				cout<<"I am party-A and my b0: "<<b0[0]<<endl;
 
 				funcMatMulMPC(a0, b0, c0, 1, 1, 1, 0, 0);
@@ -2180,10 +2180,12 @@ void exponentiation(vector<myType> &x, vector<myType> &c)
 			{
 				vector<myType> a1(1,1), b0(1,1), b1(1,1);
 				b1[0] = (rand() % 10000 + 100);
+				cout<<"Here, b1 = "<<b1[0]<<endl;
 				z = int(z_dash*10*10*10*10*10);
 				b0[0] = (z - b1[0]);
-				// receiveVector<myType>(a1, partner(partyNum), 1);
-				sendVector<myType>(b0, partner(partyNum), 1);
+				cout<<"Here, b0 = "<<b0[0]<<endl;
+				receiveVector<myType>(ref(a1), adversary(partyNum), 1);
+				sendVector<myType>(ref(b0), adversary(partyNum), 1);
 
 				funcMatMulMPC(a1, b1, c1, 1, 1, 1, 0, 0);
 			}
@@ -2194,7 +2196,7 @@ void exponentiation(vector<myType> &x, vector<myType> &c)
 				funcMatMulMPC(a2, b2, c2, 1, 1, 1, 0, 0);	
 			}
 		}
-		addVectors<myType>(c0, c1, c, 1);
+		addVectors<myType>(ref(c0), ref(c1), ref(c), 1);
 		cout<<"added vectors c0+c1 = "<<c[0]<<endl;
 		
 	}
