@@ -1952,7 +1952,10 @@ void testMatMul(size_t rows, size_t common_dim, size_t columns, size_t iter)
 	if (MPC)
 	{
 		for (int runs = 0; runs < iter; ++runs)
+			a[0] = 2;
+			b[0] = 2;
 			funcMatMulMPC(a, b, c, rows, common_dim, columns, 0, 0);
+		cout<<"share for party "<<partyNum<<": "<<c[0]<<endl;
 	}
 }
 
@@ -2162,8 +2165,8 @@ void exponentiation(vector<myType> &x, vector<myType> &c)
 	{
 		if(PRIMARY)
 		{
-			int z;
-			double p = x[0]/pow(10,10);
+			long int z;
+			double p = x[0]/double(100000);
 			double z_dash = exp(p);
 			cout <<"Value of z'= "<< z_dash << endl;
 			if(partyNum == PARTY_A)
@@ -2173,7 +2176,7 @@ void exponentiation(vector<myType> &x, vector<myType> &c)
 				a0[0] = rand() % 10000 + 100;
 				// a0.push_back(rand() % 10000 + 100);
 				cout<<"Here, a0 = "<<a0[0]<<endl;
-				z = int(z_dash*pow(10,10));
+				z = int(z_dash*pow(10,5));
 				cout<<"z = "<<z<<endl;
 				a1[0] = (z - a0[0]);
 				cout<<"Here, a1 = "<<a1[0]<<endl;
@@ -2188,7 +2191,7 @@ void exponentiation(vector<myType> &x, vector<myType> &c)
 				vector<myType> a1(1,1), b0(1,1), b1(1,1);
 				b1[0] = rand() % 10000 + 100;
 				cout<<"Here, b1 = "<<b1[0]<<endl;
-				z = int(z_dash*pow(10,10));
+				z = int(z_dash*pow(10,5));
 				b0[0] = (z - b1[0]);
 				cout<<"Here, b0 = "<<b0[0]<<endl;
 				receiveVector<myType>(ref(a1), adversary(partyNum), 1);
