@@ -64,4 +64,4 @@ void testMaxPoolDerivative(size_t p_range, size_t q_range, size_t px, size_t py,
 
 //SecureNN+ functions
 void exponentiation(vector<myType> &x, vector<myType> &c);
-void testexp(); 
+void testexp(vector<myType> &c, vector<myType> &x); 

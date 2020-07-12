@@ -27,6 +27,7 @@ ParallelAESObject* aes_parallel;
 
 int main(int argc, char** argv)
 {
+	
 
 /****************************** PREPROCESSING ******************************/ 
 	parseInputs(argc, argv);
@@ -105,8 +106,8 @@ int main(int argc, char** argv)
 /****************************** RUN NETWORK/BENCHMARKS ******************************/ 
 	start_m();
 
-	// whichNetwork = "Mat-Mul";
-	// testMatMul(784, 128, 10, NUM_ITERATIONS);
+	whichNetwork = "Mat-Mul";
+	testMatMul(784, 128, 10, NUM_ITERATIONS);
 	// testMatMul(1, 500, 100, NUM_ITERATIONS);
 	// testMatMul(1, 100, 1, NUM_ITERATIONS);
 
@@ -149,10 +150,15 @@ int main(int argc, char** argv)
 	cout << NUM_ITERATIONS << " iterations, " << whichNetwork << ", batch size " << MINI_BATCH_SIZE << endl;
 	cout << "----------------------------------" << endl << endl;  
 
-//SecureNN+
-	testexp();
 
-/****************************** CLEAN-UP ******************************/ 
+	//SecureNN+
+	vector<myType> c(1);
+	vector<myType> x(1);
+	x[0] = 100000;
+	cout<<"Value of x: "<<x[0]<<endl;
+	testexp(c, x);
+
+// /****************************** CLEAN-UP ******************************/ 
 	delete aes_common;
 	delete aes_indep;
 	delete aes_a_1;
@@ -169,6 +175,7 @@ int main(int argc, char** argv)
 	delete network;
 	if (partyNum != PARTY_S)
 		deleteObjects();
+
 
 	return 0;
 }
