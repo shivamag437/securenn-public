@@ -259,7 +259,7 @@ void funcMatMulMPC(const vector<myType> &a, const vector<myType> &b, vector<myTy
 				subtractVectors<myType>(c, temp_c, c, size);
 			}
 
-			funcTruncate2PC(c, FLOAT_PRECISION, size, PARTY_A, PARTY_B);
+			// funcTruncate2PC(c, FLOAT_PRECISION, size, PARTY_A, PARTY_B);
 		}
 	}
 }
@@ -2163,56 +2163,67 @@ void exponentiation(vector<myType> &x, vector<myType> &c)
 {
 	if (THREE_PC)
 	{
+		vector<myType> a(1);
+		vector<myType> b(1);
+		// vector<myType> c(1);
+
 		if(PRIMARY)
 		{
 			long int z;
 			double p = x[0]/double(100000);
 			double z_dash = exp(p);
 			cout <<"Value of z'= "<< z_dash << endl;
+
+			vector<myType> a1(1), b0(1);
+			
 			if(partyNum == PARTY_A)
 			{
-				cout<<"HELLO I AM PARTY-A!!"<<endl;
-				vector<myType> a0(1,1), a1(1,1), b0(1,1);
-				a0[0] = rand() % 10000 + 100;
-				// a0.push_back(rand() % 10000 + 100);
-				cout<<"Here, a0 = "<<a0[0]<<endl;
+				cout<<"---------------PARTY-A-------------------"<<endl;
+				
+				a[0] = rand() % 10000 + 100;//;
+				cout<<"a0 = "<<a[0]<<endl;
 				z = int(z_dash*pow(10,5));
 				cout<<"z = "<<z<<endl;
-				a1[0] = (z - a0[0]);
-				cout<<"Here, a1 = "<<a1[0]<<endl;
+				a1[0] = (z - a[0]);
+				cout<<"a1 = "<<a1[0]<<endl;
 				sendVector<myType>(ref(a1), adversary(partyNum), 1);
 				receiveVector<myType>(ref(b0), adversary(partyNum), 1);
-				cout<<"I am party-A and my b0: "<<b0[0]<<endl;
+				b[0] = b0[0];
+				cout<<"b0: "<<b[0]<<endl;
 
-				funcMatMulMPC(a0, b0, c, 1, 1, 1, 0, 0);
+				funcMatMulMPC(a, b, c, 1, 1, 1, 0, 0);
+
 			}
 			if(partyNum == PARTY_B)
 			{
-				vector<myType> a1(1,1), b0(1,1), b1(1,1);
-				b1[0] = rand() % 10000 + 100;
-				cout<<"Here, b1 = "<<b1[0]<<endl;
+				cout<<"---------------PARTY-B-------------------"<<endl;
+
+				b[0] =  rand() % 10000 + 100;//srand(time(NULL));
+				cout<<"b1 = "<<b[0]<<endl;
 				z = int(z_dash*pow(10,5));
-				b0[0] = (z - b1[0]);
-				cout<<"Here, b0 = "<<b0[0]<<endl;
+				b0[0] = (z - b[0]);
+				cout<<"b0 = "<<b0[0]<<endl;
 				receiveVector<myType>(ref(a1), adversary(partyNum), 1);
 				sendVector<myType>(ref(b0), adversary(partyNum), 1);
-				cout<<"Here, a1 = "<<a1[0]<<endl;
-				funcMatMulMPC(a1, b1, c, 1, 1, 1, 0, 0);
+				a[0] = a1[0];
+				cout<<"a1 = "<<a[0]<<endl;
+				funcMatMulMPC(a, b, c, 1, 1, 1, 0, 0);
 			}
-			if(HELPER)
-			{
-				vector<myType> a2(1,1), b2(1,1);
-				vector<myType> c2(1);
-				funcMatMulMPC(a2, b2, c2, 1, 1, 1, 0, 0);	
-			}
+			cout<<"Share for Party-"<<partyNum<<"is: "<<c[0];
 		}
+
+		if(HELPER)
+			{
+				funcMatMulMPC(a, b, c, 1, 1, 1, 0, 0);	
+			}
 	}
 }
-void testexp(vector<myType> &c, vector<myType> &x)
+void testexp(vector<myType> &x)
 {	
+	vector<myType> c(1);
+
 	exponentiation(x, c);
-	// uint64_t C = trunc10(c[0]);
-	// c[0] = C;
+
 	if (partyNum == PARTY_A)
 	{
 		vector<myType> temp(1);
@@ -2220,8 +2231,7 @@ void testexp(vector<myType> &c, vector<myType> &x)
 		receiveVector<myType>(ref(temp), adversary(partyNum), 1);
 		cout<<"temp  = "<<temp[0]<<endl;
 		cout<<"c  = "<<c[0]<<endl;
-		v = c[0] + temp[0];
-		// cout<<"v = "<<v<<endl;
+		v = (uint64_t)(c[0] + temp[0]);
 		cout<<"\nOutput from exponentiation function: "<<v<<endl;
 	}
 	if (partyNum==PARTY_B) 

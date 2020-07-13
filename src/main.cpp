@@ -107,7 +107,7 @@ int main(int argc, char** argv)
 	start_m();
 
 	whichNetwork = "Mat-Mul";
-	testMatMul(1, 1, 1, 1);
+	// testMatMul(1, 1, 1, 1);
 	// testMatMul(1, 500, 100, NUM_ITERATIONS);
 	// testMatMul(1, 100, 1, NUM_ITERATIONS);
 
@@ -151,12 +151,11 @@ int main(int argc, char** argv)
 	cout << "----------------------------------" << endl << endl;  
 
 
-	//SecureNN+
-	vector<myType> c(1);
+	//SecureNN+s
 	vector<myType> x(1);
 	x[0] = 100000;
 	cout<<"Value of x: "<<x[0]<<endl;
-	testexp(c, x);
+	testexp(x);
 
 // /****************************** CLEAN-UP ******************************/ 
 	delete aes_common;
