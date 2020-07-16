@@ -153,9 +153,10 @@ int main(int argc, char** argv)
 
 	//SecureNN+s
 	vector<myType> x(1);
-	x[0] = 100000;
+	x[0] = 1.23456;
 	cout<<"Value of x: "<<x[0]<<endl;
-	testexp(x);
+	// testexp(x);
+	testsigmoid(x);
 
 // /****************************** CLEAN-UP ******************************/ 
 	delete aes_common;

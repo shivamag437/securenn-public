@@ -65,3 +65,5 @@ void testMaxPoolDerivative(size_t p_range, size_t q_range, size_t px, size_t py,
 //SecureNN+ functions
 void exponentiation(vector<myType> &x, vector<myType> &c);
 void testexp(vector<myType> &x); 
+void sigmoid(vector<myType> &x, vector<myType> &c);
+void testsigmoid(vector<myType> &x);

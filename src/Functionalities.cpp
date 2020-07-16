@@ -2165,7 +2165,6 @@ void exponentiation(vector<myType> &x, vector<myType> &c)
 	{
 		vector<myType> a(1);
 		vector<myType> b(1);
-		// vector<myType> c(1);
 
 		if(PRIMARY)
 		{
@@ -2233,6 +2232,32 @@ void testexp(vector<myType> &x)
 		cout<<"c  = "<<c[0]<<endl;
 		v = (uint64_t)(c[0] + temp[0]);
 		cout<<"\nOutput from exponentiation function: "<<v<<endl;
+	}
+	if (partyNum==PARTY_B) 
+	{
+		sendVector<myType>(c, adversary(partyNum), 1);
+	}
+}
+
+void sigmoid(vector<myType> &x, vector<myType> &c)
+{
+	vector<myType> a(1), b(1);
+	exponentiation(x,a);
+	b[0] = a[0] + partyNum;
+	funcDivisionMPC(a,b,c,1);
+}
+
+void testsigmoid(vector<myType> &x)
+{
+	vector<myType> c(1);
+	sigmoid(x, c);
+	if (partyNum == PARTY_A)
+	{
+		vector<myType> temp(1);
+		receiveVector<myType>(ref(temp), adversary(partyNum), 1);
+		uint64_t v;
+		v = c[0] + temp[0];
+		cout<<"\nOutput from sigmoid function: "<<v<<endl;
 	}
 	if (partyNum==PARTY_B) 
 	{
