@@ -17,6 +17,7 @@ using namespace std;
 using namespace Eigen;
 #define NANOSECONDS_PER_SEC 1E9
 
+using namespace std; 
 
 //For time measurements
 clock_t tStart;
@@ -383,11 +384,13 @@ void end_time(string str)
 	}
 
 	clock_gettime(CLOCK_REALTIME, &requestEnd);
+	double wall_clock = diff(requestStart, requestEnd);
+	double cpu_time = (double)(clock() - tStart)/CLOCKS_PER_SEC;
 	cout << "------------------------------------" << endl;
-	cout << "Wall Clock time for " << str << ": " << diff(requestStart, requestEnd) << " sec\n";
-	cout << "CPU time for " << str << ": " << (double)(clock() - tStart)/CLOCKS_PER_SEC << " sec\n";
+	cout << "Wall Clock time for " << str << ": " << wall_clock << " sec\n";
+	cout << "CPU time for " << str << ": " << cpu_time << " sec\n";
 	cout << "------------------------------------" << endl;	
-	string log_info = to_string(diff(requestStart, requestEnd)) << " sec,"+ to_string((double)(clock() - tStart)/CLOCKS_PER_SEC) << " sec\n";
+	string log_info = to_string(wall_clock) + " sec," + to_string(cpu_time) + " sec\n";
 	log_csv("benchmarks.csv",log_info);
 	alreadyMeasuringTime = false;
 }
@@ -887,8 +890,7 @@ void end_m(string str)
 void log_csv(string filename,string str)
 {
 	std::ofstream f;
-	f.open(filename);
-	f.seekg(0, ios::end);
+	f.open(filename, std::fstream::app);
 	f << str;
 	f.close();
 }	

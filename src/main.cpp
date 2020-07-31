@@ -155,8 +155,8 @@ int main(int argc, char** argv)
 
 		// whichNetwork += " test";
 		// test(network);
-		
-		string log_info = string(k)+","+"28x28,"+string(cnn_filters_layer1)+","+string(cnn_filters_layer2)+","+string(cnn_filters_layer2*16)+","+"100,";
+
+		string log_info = to_string(k)+","+"28x28,"+to_string(cnn_filters_layer1)+","+to_string(cnn_filters_layer2)+","+to_string(cnn_filters_layer2*16)+","+"100,";
 		log_csv("benchmarks.csv",log_info);
 
 		end_m(whichNetwork);
