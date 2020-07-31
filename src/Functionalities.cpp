@@ -2239,6 +2239,42 @@ void testexp(vector<myType> &x)
 	}
 }
 
+void testdiv()
+{	
+	vector<myType> c(1);
+	vector<myType> a(1);
+	vector<myType> b(1);
+
+	if (partyNum == PARTY_A)
+	{
+		a[0] = 1;
+		b[0] = 0;	
+	}
+
+	if (partyNum == PARTY_B)
+	{
+		a[0] = 0;
+		b[0] = 1;	
+	}
+
+	funcDivisionMPC(a, b, c, 1);
+
+	if (partyNum == PARTY_A)
+	{
+		vector<myType> temp(1);
+		uint64_t v;
+		receiveVector<myType>(ref(temp), adversary(partyNum), 1);
+		cout<<"temp  = "<<temp[0]<<endl;
+		cout<<"c  = "<<c[0]<<endl;
+		v = (uint64_t)(c[0] + temp[0]);
+		cout<<"\nOutput from division function: "<<v<<endl;
+	}
+	if (partyNum==PARTY_B) 
+	{
+		sendVector<myType>(c, adversary(partyNum), 1);
+	}
+}
+
 void sigmoid(vector<myType> &x, vector<myType> &c)
 {
 	vector<myType> a(1), b(1);
