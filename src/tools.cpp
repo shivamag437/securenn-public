@@ -376,7 +376,6 @@ void start_time()
 
 void end_time(string str)
 {
-	f.open("benchmarks.csv");
 	if (!alreadyMeasuringTime)
 	{
 		cout << "start_time() never called" << endl;
@@ -388,11 +387,8 @@ void end_time(string str)
 	cout << "Wall Clock time for " << str << ": " << diff(requestStart, requestEnd) << " sec\n";
 	cout << "CPU time for " << str << ": " << (double)(clock() - tStart)/CLOCKS_PER_SEC << " sec\n";
 	cout << "------------------------------------" << endl;	
-	f.seekg(0, ios::end);
-	f << diff(requestStart, requestEnd) << " sec,";
-	f << (double)(clock() - tStart)/CLOCKS_PER_SEC << " sec\n";
-	f.close();
-	
+	string log_info = string(diff(requestStart, requestEnd)) << " sec,"+string((double)(clock() - tStart)/CLOCKS_PER_SEC) << " sec\n";
+	log_csv("benchmarks.csv",log_info);
 	alreadyMeasuringTime = false;
 }
 
@@ -887,3 +883,12 @@ void end_m(string str)
 	aggregateCommunication();
 	end_communication(str);
 }
+
+void log_csv(string filename,string str)
+{
+	std::ofstream f;
+	f.open(filename);
+	f.seekg(0, ios::end);
+	f << str;
+	f.close();
+}	

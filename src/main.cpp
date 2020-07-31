@@ -37,6 +37,7 @@ int main(int argc, char** argv)
 	std::ofstream f;
 	f.open("benchmarks.csv");
 	f << "S.no,Input Image Size,Filters in CNNlayer1,Filters in CNNlayer2,Neurons in FCLayer1,Neurons in FCLayer2,Exec Time (wall clock),Exec Time (CPU)\n";
+	f.close();
 
 	int runs = 10;
 	for(int k=0; k<runs; k++) 
@@ -154,14 +155,9 @@ int main(int argc, char** argv)
 
 		// whichNetwork += " test";
 		// test(network);
-
-		f << k << ",";
-		f << "28x28" << ",";
-		f << "cnn_filters_layer1" << ",";
-		f << "cnn_filters_layer2,";
-		f << cnn_filters_layer2*16<< ",";
-		f << "100,"
-		f.close();
+		
+		string log_info = string(k)+","+"28x28,"+string(cnn_filters_layer1)+","+string(cnn_filters_layer2)+","+string(cnn_filters_layer2*16)+","+"100,";
+		log_csv("benchmarks.csv",log_info);
 
 		end_m(whichNetwork);
 		cout << "----------------------------------" << endl;  	
