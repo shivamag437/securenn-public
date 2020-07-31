@@ -5,6 +5,8 @@
 
 #include <stdio.h> 
 #include <iostream>
+#include <fstream>
+#include <string>
 #include "Config.h"
 #include "../util/TedKrovetzAesNiWrapperC.h"
 #include <wmmintrin.h>
@@ -233,7 +235,7 @@ void convolutionReshapeBackprop(const vector<myType> &vec, vector<myType> &vecOu
 void start_m();
 void end_m(string str);
 
-void log_csv(filename,string str);
+void log_csv(string filename,string str);
 
 
 

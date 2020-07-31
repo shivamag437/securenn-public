@@ -387,7 +387,7 @@ void end_time(string str)
 	cout << "Wall Clock time for " << str << ": " << diff(requestStart, requestEnd) << " sec\n";
 	cout << "CPU time for " << str << ": " << (double)(clock() - tStart)/CLOCKS_PER_SEC << " sec\n";
 	cout << "------------------------------------" << endl;	
-	string log_info = string(diff(requestStart, requestEnd)) << " sec,"+string((double)(clock() - tStart)/CLOCKS_PER_SEC) << " sec\n";
+	string log_info = to_string(diff(requestStart, requestEnd)) << " sec,"+ to_string((double)(clock() - tStart)/CLOCKS_PER_SEC) << " sec\n";
 	log_csv("benchmarks.csv",log_info);
 	alreadyMeasuringTime = false;
 }
