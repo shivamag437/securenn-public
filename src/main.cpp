@@ -169,7 +169,7 @@ int main(int argc, char** argv)
 
 	/*//SecureNN+s
 	vector<myType> x(1);
-	x[0] = 1.23456;
+	x[0] = 123456;
 	cout<<"Value of x: "<<x[0]<<endl;
 	// testexp(x);
 	testdiv();*/

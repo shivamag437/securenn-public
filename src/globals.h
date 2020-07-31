@@ -45,7 +45,7 @@ extern int NUM_OF_PARTIES;
 #define PARTY_S 4
 
 #define PRIME_NUMBER 67
-#define FLOAT_PRECISION 13
+#define FLOAT_PRECISION 0//13
 #define PRIMARY (partyNum == PARTY_A or partyNum == PARTY_B)
 #define	NON_PRIMARY (partyNum == PARTY_C or partyNum == PARTY_D)
 #define HELPER (partyNum == PARTY_C)
