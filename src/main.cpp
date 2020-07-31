@@ -1,6 +1,7 @@
 
 #include <iostream>
 #include <string>
+#include <fstream>
 #include "secondary.h"
 #include "connect.h"
 #include "AESObject.h"
@@ -32,9 +33,14 @@ int main(int argc, char** argv)
 /****************************** PREPROCESSING ******************************/ 
 	parseInputs(argc, argv);
 	string whichNetwork = "No Network";
-		
+	
+	std::ofstream f;
+	f.open("benchmarks.csv");
+	f << "S.no,Input Image Size,Filters in CNNlayer1,Filters in CNNlayer2,Neurons in FCLayer1,Neurons in FCLayer2,Exec Time (wall clock),Exec Time (CPU)\n";
+
 	int runs = 10;
-	for(int k=0; k<runs; k++){
+	for(int k=0; k<runs; k++) 
+	{
 		NeuralNetConfig* config = new NeuralNetConfig(NUM_ITERATIONS);
 
 
@@ -149,7 +155,13 @@ int main(int argc, char** argv)
 		// whichNetwork += " test";
 		// test(network);
 
-
+		f << k << ",";
+		f << "28x28" << ",";
+		f << "cnn_filters_layer1" << ",";
+		f << "cnn_filters_layer2,";
+		f << cnn_filters_layer2*16<< ",";
+		f << "100,"
+		f.close();
 
 		end_m(whichNetwork);
 		cout << "----------------------------------" << endl;  	
