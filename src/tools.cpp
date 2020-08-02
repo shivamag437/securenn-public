@@ -887,10 +887,21 @@ void end_m(string str)
 	end_communication(str);
 }
 
-void log_csv(string filename,string str)
+void clear_file(string filename)
 {
 	std::ofstream f;
-	f.open(filename, std::fstream::app);
-	f << str;
+	f.open(filename);
 	f.close();
+}
+
+void log_csv(string filename,string str)
+{
+	if(partyNum==PARTY_A)
+	{
+		std::ofstream f;
+		f.open(filename, std::fstream::app);
+		f << str;
+		f.flush();
+		f.close();
+	}
 }	

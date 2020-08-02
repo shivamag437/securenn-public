@@ -34,10 +34,11 @@ int main(int argc, char** argv)
 	parseInputs(argc, argv);
 	string whichNetwork = "No Network";
 	
-	std::ofstream f;
-	f.open("benchmarks.csv");
-	f << "S.no,Input Image Size,Filters in CNNlayer1,Filters in CNNlayer2,Neurons in FCLayer1,Neurons in FCLayer2,Exec Time (wall clock),Exec Time (CPU)\n";
-	f.close();
+	
+	string header = "S.no,Input Image Size,Filters in CNNlayer1,Filters in CNNlayer2,Neurons in FCLayer1,Neurons in FCLayer2,Exec Time (wall clock),Exec Time (CPU)\n";
+	string filename = "benchmarks.csv";
+	// clear_file("benchmarks.csv");
+	log_csv("benchmarks.csv",header);
 
 	int runs = 10;
 	for(int k=0; k<runs; k++) 

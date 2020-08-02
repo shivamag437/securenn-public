@@ -235,6 +235,7 @@ void convolutionReshapeBackprop(const vector<myType> &vec, vector<myType> &vecOu
 void start_m();
 void end_m(string str);
 
+void clear_file(string filename);
 void log_csv(string filename,string str);
 
 
