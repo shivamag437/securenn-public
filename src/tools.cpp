@@ -891,6 +891,7 @@ void clear_file(string filename)
 {
 	std::ofstream f;
 	f.open(filename);
+	f.flush();
 	f.close();
 }
 
