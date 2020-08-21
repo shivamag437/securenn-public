@@ -2254,7 +2254,7 @@ void testdiv()
 	if (partyNum == PARTY_B)
 	{
 		a[0] = 0;
-		b[0] = 1;	
+		b[0] = 1;
 	}
 
 	funcDivisionMPC(a, b, c, 1);

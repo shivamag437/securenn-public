@@ -36,38 +36,42 @@ int main(int argc, char** argv)
 	
 	
 	//string header = "S.no,Input Image Size,Filters in CNNlayer1,Filters in CNNlayer2,Neurons in FCLayer1,Neurons in FCLayer2,Exec Time (wall clock),Exec Time (CPU)\n";
-	string header = "S.no,Input Image Size,Total Filters,Number of Layers,Number of filters in each layer,Neurons in FCLayer1,Neurons in FCLayer2,Exec Time (wall clock),Exec Time (CPU)\n";
-	//clear_file("benchmarks.csv");
-	log_csv("benchmarks.csv",header);
+	// string header = "S.no,Input Image Size,Total Filters,Number of Layers,Number of filters in each layer,Neurons in FCLayer1,Neurons in FCLayer2,Exec Time (wall clock),Exec Time (CPU)\n";
+	// //clear_file("benchmarks.csv");
+	// log_csv("benchmarks.csv",header);
 	int total_filters = 32;
 	int num_filters = 32;
-	for(int k=0; num_filters >=1; num_filters /= 2) 
-	{
+	// for(int k=0; num_filters >=1; num_filters /= 2) 
+	// {
 		NeuralNetConfig* config = new NeuralNetConfig(NUM_ITERATIONS);
 
 
 /****************************** SELECT NETWORK ******************************/ 
 	
-		int num_cnn_layers = total_filters/num_filters;
-		NUM_LAYERS = num_cnn_layers+3;
-		int image_size = 28;
+		// int num_cnn_layers = total_filters/num_filters;
+		// NUM_LAYERS = num_cnn_layers+3;
+		// int image_size = 28;
 		//MINIONN, Network-D in GAZELLE
 		whichNetwork = "MiniONN/GAZELLE-D";
-		CNNConfig* l;
-		l = new CNNConfig(num_filters,1,5,5,MINI_BATCH_SIZE,28,28,2,2);
-		config->addLayer(l);
-		image_size = (image_size-5+1)/2;
-		for(int i=0; i<num_cnn_layers-1; i++){
-			l = new CNNConfig(num_filters,num_filters,5,5,MINI_BATCH_SIZE,image_size,image_size,2,2);
-			config->addLayer(l);
-			image_size = (image_size-5+1)/2;
-		}
+		// CNNConfig* l;
+		// l = new CNNConfig(num_filters,1,5,5,MINI_BATCH_SIZE,28,28,2,2);
+		// config->addLayer(l);
+		// image_size = (image_size-5+1)/2;
+		// for(int i=0; i<num_cnn_layers-1; i++){
+		// 	l = new CNNConfig(num_filters,num_filters,5,5,MINI_BATCH_SIZE,image_size,image_size,2,2);
+		// 	config->addLayer(l);
+		// 	image_size = (image_size-5+1)/2;
+		// }
 		// CNNConfig* l0 = new CNNConfig(cnn_filters_layer1,1,5,5,MINI_BATCH_SIZE,28,28,2,2);
 		// CNNConfig* l1 = new CNNConfig(cnn_filters_layer2,cnn_filters_layer1,5,5,MINI_BATCH_SIZE,12,12,2,2);
-		FCConfig* l2 = new FCConfig(MINI_BATCH_SIZE, num_filters * image_size, 100);
+		// FCConfig* l2 = new FCConfig(MINI_BATCH_SIZE, num_filters * image_size, 100);
+		// FCConfig* l3 = new FCConfig(MINI_BATCH_SIZE, 100, 10);
+		CNNConfig* l0 = new CNNConfig(16,1,5,5,MINI_BATCH_SIZE,28,28,2,2);
+		CNNConfig* l1 = new CNNConfig(16,16,5,5,MINI_BATCH_SIZE,12,12,2,2);
+		FCConfig* l2 = new FCConfig(MINI_BATCH_SIZE, 256, 100);
 		FCConfig* l3 = new FCConfig(MINI_BATCH_SIZE, 100, 10);
-		//config->addLayer(l0);
-		//config->addLayer(l1);
+		config->addLayer(l0);
+		config->addLayer(l1);
 		config->addLayer(l2);
 		config->addLayer(l3);
 
@@ -103,7 +107,7 @@ int main(int argc, char** argv)
 		// config->addLayer(l2);
 
 		
-		config->checkNetwork();
+		// config->checkNetwork();
 		NeuralNetwork* network = new NeuralNetwork(config);
 
 
@@ -160,14 +164,14 @@ int main(int argc, char** argv)
 		// testMaxPoolDerivative(24, 24, 2, 2, 16, NUM_ITERATIONS);
 		// testMaxPoolDerivative(8, 8, 4, 4, 50, NUM_ITERATIONS);
 
-		whichNetwork += " train";
-		train(network, config);
+		// whichNetwork += " train";
+		// train(network, config);
 
 		// whichNetwork += " test";
 		// test(network);
 
-		string log_info = to_string(k)+","+"28x28,"+to_string(total_filters)+","+to_string(num_cnn_layers)+","+to_string(num_filters)+","+to_string(num_cnn_layers*image_size)+","+"100,";
-		log_csv("benchmarks.csv",log_info);
+		// string log_info = to_string(k)+","+"28x28,"+to_string(total_filters)+","+to_string(num_cnn_layers)+","+to_string(num_filters)+","+to_string(num_cnn_layers*image_size)+","+"100,";
+		// log_csv("benchmarks.csv",log_info);
 
 		end_m(whichNetwork);
 		cout << "----------------------------------" << endl;  	
@@ -177,23 +181,23 @@ int main(int argc, char** argv)
 		cout << "----------------------------------" << endl << endl;
 
 		delete config;
-		delete l;
+		// delete l;
 		//delete l0;
 		//delete l1;
 		delete l2;
 		delete l3;
 		delete network;
-	}
+	// }
 
 
-	/*//SecureNN+s
-	vector<myType> x(1);
-	x[0] = 123456;
-	cout<<"Value of x: "<<x[0]<<endl;
+	//SecureNN+s
+	// vector<myType> x(1);
+	// x[0] = 123456;
+	// cout<<"Value of x: "<<x[0]<<endl;
 	// testexp(x);
-	testdiv();*/
+	testdiv();
 
-// /****************************** CLEAN-UP ******************************/ 
+// /****************************** CLEAN-UP ***************************** 
 	delete aes_common;
 	delete aes_indep;
 	delete aes_a_1;
