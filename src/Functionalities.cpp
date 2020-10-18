@@ -2154,11 +2154,6 @@ void testMaxPoolDerivative(size_t p_range, size_t q_range, size_t px, size_t py,
 
 // SecureNN+
 
-// uint64_t trunc10(uint64_t t)
-// {
-// 	itoa()
-// }
-
 void exponentiation(vector<myType> &x, vector<myType> &c)
 {
 	if (THREE_PC)
@@ -2235,12 +2230,12 @@ void testexp(vector<myType> &x)
 		vector<myType> temp(1);
 		uint64_t v;
 		receiveVector<myType>(ref(temp), adversary(partyNum), 1);
-		cout<<"temp  = "<<temp[0]<<endl;
-		cout<<"c  = "<<c[0]<<endl;
+		// cout<<"temp  = "<<temp[0]<<endl;
+		// cout<<"c  = "<<c[0]<<endl;
 		v = (uint64_t)(c[0] + temp[0]);
-		cout<<"fixed point v: "<<v<<endl;
-		double res = double(v)/pow(2,FLOAT_PRECISION);
-		cout<<"Output from exponentiation function: "<<res<<endl;
+		// cout<<"fixed point v: "<<v<<endl;
+		// double res = double(v)/pow(2,FLOAT_PRECISION);
+		// cout<<"Output from exponentiation function: "<<res<<endl;
 	}
 	if (partyNum==PARTY_B) 
 	{
@@ -2256,14 +2251,14 @@ void testdiv()
 
 	if (partyNum == PARTY_A)
 	{
-		a[0] = 1;
-		b[0] = 0;	
+		a[0] = floatToMyType(float(1));
+		b[0] = floatToMyType(float(0));	
 	}
 
 	if (partyNum == PARTY_B)
 	{
-		a[0] = 0;
-		b[0] = 2;	
+		a[0] = floatToMyType(float(0));
+		b[0] = floatToMyType(float(2));	
 	}
 
 	funcDivisionMPC(a, b, c, 1);
@@ -2276,7 +2271,8 @@ void testdiv()
 		cout<<"temp  = "<<temp[0]<<endl;
 		cout<<"c  = "<<c[0]<<endl;
 		v = (uint64_t)(c[0] + temp[0]);
-		cout<<"\nOutput from division function: "<<v<<endl;
+		double res = double(v)/pow(2,FLOAT_PRECISION);
+		cout<<"\nOutput from division function: "<<res<<endl;
 	}
 	if (partyNum==PARTY_B) 
 	{
@@ -2288,7 +2284,7 @@ void sigmoid(vector<myType> &x, vector<myType> &c)
 {
 	vector<myType> a(1), b(1);
 	exponentiation(x,a);
-	b[0] = a[0] + partyNum;
+	b[0] = uint64_t(a[0] + floatToMyType(float(partyNum)));
 	funcDivisionMPC(a,b,c,1);
 }
 
@@ -2301,11 +2297,12 @@ void testsigmoid(vector<myType> &x)
 		vector<myType> temp(1);
 		receiveVector<myType>(ref(temp), adversary(partyNum), 1);
 		uint64_t v;
-		v = c[0] + temp[0];
-		cout<<"\nOutput from sigmoid function: "<<v<<endl;
+		v = (uint64_t)(c[0] + temp[0]);
+		double res = double(v)/pow(2,FLOAT_PRECISION);
+		cout<<"\nOutput from sigmoid function: "<<res<<endl;
 	}
 	if (partyNum==PARTY_B) 
 	{
-		sendVector<myType>(c, adversary(partyNum), 1);
+		sendVector<myType>(c, adversary(partyNum), 1); 
 	}
 }
