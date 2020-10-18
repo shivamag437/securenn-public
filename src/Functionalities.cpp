@@ -259,7 +259,7 @@ void funcMatMulMPC(const vector<myType> &a, const vector<myType> &b, vector<myTy
 				subtractVectors<myType>(c, temp_c, c, size);
 			}
 
-			// funcTruncate2PC(c, FLOAT_PRECISION, size, PARTY_A, PARTY_B);
+			funcTruncate2PC(c, FLOAT_PRECISION, size, PARTY_A, PARTY_B);
 		}
 	}
 }
@@ -2163,25 +2163,33 @@ void exponentiation(vector<myType> &x, vector<myType> &c)
 {
 	if (THREE_PC)
 	{
+		
 		vector<myType> a(1);
 		vector<myType> b(1);
 
+		//To generate random uint_64 number
+		std::random_device rd;
+		std::mt19937_64 gen(rd());
+		std::uniform_int_distribution<uint64_t> dis;
+
 		if(PRIMARY)
 		{
-			long int z;
-			double p = x[0]/double(100000);
-			double z_dash = exp(p);
-			cout <<"Value of z'= "<< z_dash << endl;
+			myType z;
+			float p = float(x[0])/pow(2,13);
+			float z_dash = exp(p);
+			cout<<"z_dash: "<<z_dash<<endl;
+			z = floatToMyType(z_dash);
+
+			cout <<"Value of z= "<< z << endl;
 
 			vector<myType> a1(1), b0(1);
 			
 			if(partyNum == PARTY_A)
 			{
 				cout<<"---------------PARTY-A-------------------"<<endl;
-				
-				a[0] = rand() % 10000 + 100;//;
+
+				a[0] = dis(gen);//;
 				cout<<"a0 = "<<a[0]<<endl;
-				z = int(z_dash*pow(10,5));
 				cout<<"z = "<<z<<endl;
 				a1[0] = (z - a[0]);
 				cout<<"a1 = "<<a1[0]<<endl;
@@ -2197,9 +2205,8 @@ void exponentiation(vector<myType> &x, vector<myType> &c)
 			{
 				cout<<"---------------PARTY-B-------------------"<<endl;
 
-				b[0] =  rand() % 10000 + 100;//srand(time(NULL));
+				b[0] =  dis(gen);//srand(time(NULL));
 				cout<<"b1 = "<<b[0]<<endl;
-				z = int(z_dash*pow(10,5));
 				b0[0] = (z - b[0]);
 				cout<<"b0 = "<<b0[0]<<endl;
 				receiveVector<myType>(ref(a1), adversary(partyNum), 1);
@@ -2231,7 +2238,9 @@ void testexp(vector<myType> &x)
 		cout<<"temp  = "<<temp[0]<<endl;
 		cout<<"c  = "<<c[0]<<endl;
 		v = (uint64_t)(c[0] + temp[0]);
-		cout<<"\nOutput from exponentiation function: "<<v<<endl;
+		cout<<"fixed point v: "<<v<<endl;
+		double res = double(v)/pow(2,FLOAT_PRECISION);
+		cout<<"Output from exponentiation function: "<<res<<endl;
 	}
 	if (partyNum==PARTY_B) 
 	{
@@ -2254,7 +2263,7 @@ void testdiv()
 	if (partyNum == PARTY_B)
 	{
 		a[0] = 0;
-		b[0] = 1;	
+		b[0] = 2;	
 	}
 
 	funcDivisionMPC(a, b, c, 1);

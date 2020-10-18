@@ -9,6 +9,7 @@ NeuralNetwork::NeuralNetwork(NeuralNetConfig* config)
 :inputData(LAYER0 * MINI_BATCH_SIZE),
  outputData(LAST_LAYER_SIZE * MINI_BATCH_SIZE)
 {
+	cout<<"Number of layers: "<<NUM_LAYERS<<endl;
 	for (size_t i = 0; i < NUM_LAYERS - 1; ++i)
 	{
 		if (config->layerConf[i]->type.compare("FC") == 0)

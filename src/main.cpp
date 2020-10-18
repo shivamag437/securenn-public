@@ -1,7 +1,6 @@
 
 #include <iostream>
 #include <string>
-#include <fstream>
 #include "secondary.h"
 #include "connect.h"
 #include "AESObject.h"
@@ -33,165 +32,136 @@ int main(int argc, char** argv)
 /****************************** PREPROCESSING ******************************/ 
 	parseInputs(argc, argv);
 	string whichNetwork = "No Network";
-	
-	
-	//string header = "S.no,Input Image Size,Filters in CNNlayer1,Filters in CNNlayer2,Neurons in FCLayer1,Neurons in FCLayer2,Exec Time (wall clock),Exec Time (CPU)\n";
-	string header = "S.no,Input Image Size,Total Filters,Number of Layers,Number of filters in each layer,Neurons in FCLayer1,Neurons in FCLayer2,Exec Time (wall clock),Exec Time (CPU)\n";
-	//clear_file("benchmarks.csv");
-	log_csv("benchmarks.csv",header);
-	int total_filters = 32;
-	int num_filters = 32;
-	for(int k=0; num_filters >=1; num_filters /= 2) 
-	{
-		NeuralNetConfig* config = new NeuralNetConfig(NUM_ITERATIONS);
+	NeuralNetConfig* config = new NeuralNetConfig(NUM_ITERATIONS);
 
 
 /****************************** SELECT NETWORK ******************************/ 
+	//MINIONN, Network-D in GAZELLE
+	whichNetwork = "MiniONN/GAZELLE-D";
+	CNNConfig* l0 = new CNNConfig(16,1,5,5,MINI_BATCH_SIZE,28,28,2,2);
+	CNNConfig* l1 = new CNNConfig(16,16,5,5,MINI_BATCH_SIZE,12,12,2,2);
+	FCConfig* l2 = new FCConfig(MINI_BATCH_SIZE, 256, 100);
+	FCConfig* l3 = new FCConfig(MINI_BATCH_SIZE, 100, 10);
+	config->addLayer(l0);
+	config->addLayer(l1);
+	config->addLayer(l2);
+	config->addLayer(l3);
+
+
+
+	//LeNet
+	// whichNetwork = "LeNet";
+	// CNNConfig* l0 = new CNNConfig(20,1,5,5,MINI_BATCH_SIZE,28,28,2,2);
+	// CNNConfig* l1 = new CNNConfig(50,20,5,5,MINI_BATCH_SIZE,12,12,2,2);
+	// FCConfig* l2 = new FCConfig(MINI_BATCH_SIZE, 800, 500);
+	// FCConfig* l3 = new FCConfig(MINI_BATCH_SIZE, 500, 10);
+	// config->addLayer(l0);
+	// config->addLayer(l1);
+	// config->addLayer(l2);
+	// config->addLayer(l3);
+
+	//SecureML
+	// whichNetwork = "SecureML";
+	// FCConfig* l0 = new FCConfig(MINI_BATCH_SIZE, LAYER0, LAYER1); 
+	// FCConfig* l1 = new FCConfig(MINI_BATCH_SIZE, LAYER1, LAYER2); 
+	// FCConfig* l2 = new FCConfig(MINI_BATCH_SIZE, LAYER2, LAST_LAYER_SIZE); 
+	// config->addLayer(l0);
+	// config->addLayer(l1);
+	// config->addLayer(l2);
+
+	//Chameleon
+	// whichNetwork = "Sarda";
+	// ChameleonCNNConfig* l0 = new ChameleonCNNConfig(5,1,5,5,MINI_BATCH_SIZE,28,28,2,2);
+	// FCConfig* l1 = new FCConfig(MINI_BATCH_SIZE, 980, 100);
+	// FCConfig* l2 = new FCConfig(MINI_BATCH_SIZE, 100, 10);
+	// config->addLayer(l0);
+	// config->addLayer(l1);
+	// config->addLayer(l2);
+
 	
-		int num_cnn_layers = total_filters/num_filters;
-		NUM_LAYERS = num_cnn_layers+3;
-		int image_size = 28;
-		//MINIONN, Network-D in GAZELLE
-		whichNetwork = "MiniONN/GAZELLE-D";
-		CNNConfig* l;
-		l = new CNNConfig(num_filters,1,5,5,MINI_BATCH_SIZE,28,28,2,2);
-		config->addLayer(l);
-		image_size = (image_size-5+1)/2;
-		for(int i=0; i<num_cnn_layers-1; i++){
-			l = new CNNConfig(num_filters,num_filters,5,5,MINI_BATCH_SIZE,image_size,image_size,2,2);
-			config->addLayer(l);
-			image_size = (image_size-5+1)/2;
-		}
-		// CNNConfig* l0 = new CNNConfig(cnn_filters_layer1,1,5,5,MINI_BATCH_SIZE,28,28,2,2);
-		// CNNConfig* l1 = new CNNConfig(cnn_filters_layer2,cnn_filters_layer1,5,5,MINI_BATCH_SIZE,12,12,2,2);
-		FCConfig* l2 = new FCConfig(MINI_BATCH_SIZE, num_filters * image_size, 100);
-		FCConfig* l3 = new FCConfig(MINI_BATCH_SIZE, 100, 10);
-		//config->addLayer(l0);
-		//config->addLayer(l1);
-		config->addLayer(l2);
-		config->addLayer(l3);
+	config->checkNetwork();
+	NeuralNetwork* network = new NeuralNetwork(config);
 
 
+/****************************** AES SETUP and SYNC ******************************/ 
+	aes_indep = new AESObject(argv[4]);
+	aes_common = new AESObject(argv[5]);
+	aes_a_1 = new AESObject("files/keyD");
+	aes_a_2 = new AESObject("files/keyD");
+	aes_b_1 = new AESObject("files/keyD");
+	aes_b_2 = new AESObject("files/keyD");
+	aes_c_1 = new AESObject("files/keyD");
+	aes_parallel = new ParallelAESObject(argv[5]);
 
-		//LeNet
-		// whichNetwork = "LeNet";
-		// CNNConfig* l0 = new CNNConfig(20,1,5,5,MINI_BATCH_SIZE,28,28,2,2);
-		// CNNConfig* l1 = new CNNConfig(50,20,5,5,MINI_BATCH_SIZE,12,12,2,2);
-		// FCConfig* l2 = new FCConfig(MINI_BATCH_SIZE, 800, 500);
-		// FCConfig* l3 = new FCConfig(MINI_BATCH_SIZE, 500, 10);
-		// config->addLayer(l0);
-		// config->addLayer(l1);
-		// config->addLayer(l2);
-		// config->addLayer(l3);
-
-		//SecureML
-		// whichNetwork = "SecureML";
-		// FCConfig* l0 = new FCConfig(MINI_BATCH_SIZE, LAYER0, LAYER1); 
-		// FCConfig* l1 = new FCConfig(MINI_BATCH_SIZE, LAYER1, LAYER2); 
-		// FCConfig* l2 = new FCConfig(MINI_BATCH_SIZE, LAYER2, LAST_LAYER_SIZE); 
-		// config->addLayer(l0);
-		// config->addLayer(l1);
-		// config->addLayer(l2);
-
-		//Chameleon
-		// whichNetwork = "Sarda";
-		// ChameleonCNNConfig* l0 = new ChameleonCNNConfig(5,1,5,5,MINI_BATCH_SIZE,28,28,2,2);
-		// FCConfig* l1 = new FCConfig(MINI_BATCH_SIZE, 980, 100);
-		// FCConfig* l2 = new FCConfig(MINI_BATCH_SIZE, 100, 10);
-		// config->addLayer(l0);
-		// config->addLayer(l1);
-		// config->addLayer(l2);
-
-		
-		config->checkNetwork();
-		NeuralNetwork* network = new NeuralNetwork(config);
-
-
-	/****************************** AES SETUP and SYNC ******************************/ 
-		aes_indep = new AESObject(argv[4]);
-		aes_common = new AESObject(argv[5]);
-		aes_a_1 = new AESObject("files/keyD");
-		aes_a_2 = new AESObject("files/keyD");
-		aes_b_1 = new AESObject("files/keyD");
-		aes_b_2 = new AESObject("files/keyD");
-		aes_c_1 = new AESObject("files/keyD");
-		aes_parallel = new ParallelAESObject(argv[5]);
-
-		if (!STANDALONE)
-		{
-			initializeCommunication(argv[3], partyNum);
-			synchronize(2000000);	
-		}
-
-		if (PARALLEL)
-			aes_parallel->precompute();
-
-
-	/****************************** RUN NETWORK/BENCHMARKS ******************************/ 
-		start_m();
-
-		// whichNetwork = "Mat-Mul";
-		// testMatMul(1, 1, 1, 1);
-		// testMatMul(1, 500, 100, NUM_ITERATIONS);
-		// testMatMul(1, 100, 1, NUM_ITERATIONS);
-
-		// whichNetwork = "Convolution";
-		// testConvolution(28, 28, 5, 5, 1, 20, NUM_ITERATIONS);
-		// testConvolution(28, 28, 3, 3, 1, 20, NUM_ITERATIONS);
-		// testConvolution(8, 8, 5, 5, 16, 50, NUM_ITERATIONS);
-
-		// whichNetwork = "Relu";
-		// testRelu(128, 128, NUM_ITERATIONS);
-		// testRelu(576, 20, NUM_ITERATIONS);
-		// testRelu(64, 16, NUM_ITERATIONS);
-
-		// whichNetwork = "ReluPrime";
-		// testReluPrime(128, 128, NUM_ITERATIONS);
-		// testReluPrime(576, 20, NUM_ITERATIONS);
-		// testReluPrime(64, 16, NUM_ITERATIONS);
-
-		// whichNetwork = "MaxPool";
-		// testMaxPool(24, 24, 2, 2, 20, NUM_ITERATIONS);
-		// testMaxPool(24, 24, 2, 2, 16, NUM_ITERATIONS);
-		// testMaxPool(8, 8, 4, 4, 50, NUM_ITERATIONS);
-
-		// whichNetwork = "MaxPoolDerivative";
-		// testMaxPoolDerivative(24, 24, 2, 2, 20, NUM_ITERATIONS);
-		// testMaxPoolDerivative(24, 24, 2, 2, 16, NUM_ITERATIONS);
-		// testMaxPoolDerivative(8, 8, 4, 4, 50, NUM_ITERATIONS);
-
-		whichNetwork += " train";
-		train(network, config);
-
-		// whichNetwork += " test";
-		// test(network);
-
-		string log_info = to_string(k)+","+"28x28,"+to_string(total_filters)+","+to_string(num_cnn_layers)+","+to_string(num_filters)+","+to_string(num_cnn_layers*image_size)+","+"100,";
-		log_csv("benchmarks.csv",log_info);
-
-		end_m(whichNetwork);
-		cout << "----------------------------------" << endl;  	
-		cout << NUM_OF_PARTIES << "PC code, P" << partyNum << endl;
-		cout << NUM_ITERATIONS << " iterations, " << whichNetwork << ", batch size " << MINI_BATCH_SIZE << endl;
-		cout << "Number of filters in CNN layers: " << num_filters << endl;
-		cout << "----------------------------------" << endl << endl;
-
-		delete config;
-		delete l;
-		//delete l0;
-		//delete l1;
-		delete l2;
-		delete l3;
-		delete network;
+	if (!STANDALONE)
+	{
+		initializeCommunication(argv[3], partyNum);
+		synchronize(2000000);	
 	}
 
+	if (PARALLEL)
+		aes_parallel->precompute();
 
-	/*//SecureNN+s
+
+/****************************** RUN NETWORK/BENCHMARKS ******************************/ 
+	start_m();
+
+	// whichNetwork = "Mat-Mul";
+	// testMatMul(784, 128, 10, NUM_ITERATIONS);
+	// testMatMul(1, 500, 100, NUM_ITERATIONS);
+	// testMatMul(1, 100, 1, NUM_ITERATIONS);
+
+	// whichNetwork = "Convolution";
+	// testConvolution(28, 28, 5, 5, 1, 20, NUM_ITERATIONS);
+	// testConvolution(28, 28, 3, 3, 1, 20, NUM_ITERATIONS);
+	// testConvolution(8, 8, 5, 5, 16, 50, NUM_ITERATIONS);
+
+	// whichNetwork = "Relu";
+	// testRelu(128, 128, NUM_ITERATIONS);
+	// testRelu(576, 20, NUM_ITERATIONS);
+	// testRelu(64, 16, NUM_ITERATIONS);
+
+	// whichNetwork = "ReluPrime";
+	// testReluPrime(128, 128, NUM_ITERATIONS);
+	// testReluPrime(576, 20, NUM_ITERATIONS);
+	// testReluPrime(64, 16, NUM_ITERATIONS);
+
+	// whichNetwork = "MaxPool";
+	// testMaxPool(24, 24, 2, 2, 20, NUM_ITERATIONS);
+	// testMaxPool(24, 24, 2, 2, 16, NUM_ITERATIONS);
+	// testMaxPool(8, 8, 4, 4, 50, NUM_ITERATIONS);
+
+	// whichNetwork = "MaxPoolDerivative";
+	// testMaxPoolDerivative(24, 24, 2, 2, 20, NUM_ITERATIONS);
+	// testMaxPoolDerivative(24, 24, 2, 2, 16, NUM_ITERATIONS);
+	// testMaxPoolDerivative(8, 8, 4, 4, 50, NUM_ITERATIONS);
+
+	//whichNetwork += " train";
+	//train(network, config);
+
+	// whichNetwork += " test";
+	// test(network);
+
+
+
+	end_m(whichNetwork);
+	cout << "----------------------------------" << endl;  	
+	cout << NUM_OF_PARTIES << "PC code, P" << partyNum << endl;
+	cout << NUM_ITERATIONS << " iterations, " << whichNetwork << ", batch size " << MINI_BATCH_SIZE << endl;
+	cout << "----------------------------------" << endl << endl;  
+
+
+	//SecureNN+
 	vector<myType> x(1);
-	x[0] = 123456;
-	cout<<"Value of x: "<<x[0]<<endl;
-	// testexp(x);
-	testdiv();*/
+	vector<myType> c(1);
+	x[0] = floatToMyType(float(1));
+	cout<<"Value of x(float to fixed): "<<x[0]<<endl;
+	cout<<"Value of x(without func): "<<double(1)*(pow(2,13))<<endl;
+	double p = double(x[0])/pow(2,13);
+	cout<<"Value of x(fixed to float): "<<p<<endl;
+	testexp(x);
+
+	//testdiv();
 
 // /****************************** CLEAN-UP ******************************/ 
 	delete aes_common;
@@ -202,12 +172,12 @@ int main(int argc, char** argv)
 	delete aes_b_2;
 	delete aes_c_1;
 	delete aes_parallel;
-	/*delete config;
+	delete config;
 	delete l0;
 	delete l1;
 	delete l2;
-	delete l3;
-	delete network;*/
+	// delete l3;
+	delete network;
 	if (partyNum != PARTY_S)
 		deleteObjects();
 

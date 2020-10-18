@@ -15,6 +15,7 @@ using namespace std;
 #define _aligned_free free
 #define getrandom(min, max) ((rand()%(int)(((max) + 1)-(min)))+ (min))
 #define floatToMyType(a) ((myType)(a * (1 << FLOAT_PRECISION)))
+#define MyTypetofloat(a) ((float)(a / (1 << FLOAT_PRECISION)))
 
 
 //AES and other globals
@@ -45,7 +46,7 @@ extern int NUM_OF_PARTIES;
 #define PARTY_S 4
 
 #define PRIME_NUMBER 67
-#define FLOAT_PRECISION 0//13
+#define FLOAT_PRECISION 13
 #define PRIMARY (partyNum == PARTY_A or partyNum == PARTY_B)
 #define	NON_PRIMARY (partyNum == PARTY_C or partyNum == PARTY_D)
 #define HELPER (partyNum == PARTY_C)
@@ -55,9 +56,9 @@ extern int NUM_OF_PARTIES;
 
 //Neural Network globals.
 //Batch size has to be a power of two
-int NUM_LAYERS = 5;
+#define NUM_LAYERS 5
 #define LL (NUM_LAYERS-2)
-#define LAYER0 784
+#define LAYER0 3136
 #define LAYER1 128
 #define LAYER2 128
 #define LAST_LAYER_SIZE 10
