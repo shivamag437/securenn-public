@@ -136,8 +136,8 @@ int main(int argc, char** argv)
 	// testMaxPoolDerivative(24, 24, 2, 2, 16, NUM_ITERATIONS);
 	// testMaxPoolDerivative(8, 8, 4, 4, 50, NUM_ITERATIONS);
 
-	//whichNetwork += " train";
-	//train(network, config);
+	whichNetwork += " train";
+	train(network, config);
 
 	// whichNetwork += " test";
 	// test(network);
@@ -160,8 +160,8 @@ int main(int argc, char** argv)
 	//cout<<"Value of x(without func): "<<double(1)*(pow(2,13))<<endl;
 	// double p = double(x[0])/pow(2,13);
 	cout<<"Value of x(fixed to float): "<<p<<endl;
-	// testexp(x);
-	//testsigmoid(x);
+	testexp(x);
+	testsigmoid(x);
 
 	testdiv();
 
