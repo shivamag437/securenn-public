@@ -3,9 +3,6 @@
 #include "Functionalities.h"
 #include <algorithm>    // std::rotate
 #include <thread>
-#include <math.h>
-#include<time.h> 
-#include <stdlib.h>
 using namespace std;
 
 
@@ -175,14 +172,10 @@ void funcMatMulMPC(const vector<myType> &a, const vector<myType> &b, vector<myTy
 			populateRandomVector<myType>(B2, size_right, "b_2", "POSITIVE");
 			populateRandomVector<myType>(C1, size, "c_1", "POSITIVE");
 
-			//A1 and A2 act as additive shares of A
 			addVectors<myType>(A1, A2, A, size_left);
-			//B1 and B2 act as additive shares of B
 			addVectors<myType>(B1, B2, B, size_right);
 
-			//C=A*B
 			matrixMultEigen(A, B, C, rows, common_dim, columns, 0, 0);
-			//C1 and C2 act as additive shares of C
 			subtractVectors<myType>(C, C1, C2, size);
 
 			// splitIntoShares(C, C1, C2, size);
@@ -200,7 +193,6 @@ void funcMatMulMPC(const vector<myType> &a, const vector<myType> &b, vector<myTy
 
 			if (partyNum == PARTY_A)
 			{
-				//Generate the same matrices as the one labelled "a_1", "b_1" and "c_1" in the helper server
 				populateRandomVector<myType>(A, size_left, "a_1", "POSITIVE");
 				populateRandomVector<myType>(B, size_right, "b_1", "POSITIVE");
 				populateRandomVector<myType>(C, size, "c_1", "POSITIVE");
@@ -208,7 +200,6 @@ void funcMatMulMPC(const vector<myType> &a, const vector<myType> &b, vector<myTy
 
 			if (partyNum == PARTY_B)
 			{
-				//Generate the same matrices as the one labelled "a_2", "b_2" and in the helper server
 				populateRandomVector<myType>(A, size_left, "a_2", "POSITIVE");
 				populateRandomVector<myType>(B, size_right, "b_2", "POSITIVE");
 				receiveVector<myType>(C, PARTY_C, size);
@@ -1417,7 +1408,6 @@ void funcDivisionMPC(const vector<myType> &a, const vector<myType> &b, vector<my
 
 
 
-
 //Chunk wise maximum of a vector of size rows*columns and maximum is caclulated of every 
 //column number of elements. max is a vector of size rows. maxIndex contains the index of 
 //the maximum value.
@@ -1953,10 +1943,7 @@ void testMatMul(size_t rows, size_t common_dim, size_t columns, size_t iter)
 	if (MPC)
 	{
 		for (int runs = 0; runs < iter; ++runs)
-			a[0] = 2;
-			b[0] = 2;
 			funcMatMulMPC(a, b, c, rows, common_dim, columns, 0, 0);
-		cout<<"share for party "<<partyNum<<": "<<c[0]<<endl;
 	}
 }
 
@@ -2152,6 +2139,7 @@ void testMaxPoolDerivative(size_t p_range, size_t q_range, size_t px, size_t py,
 			funcDotProductMPC(largerDelta, thatMatrix, deltaMaxPool, size_y);
 	}
 }
+
 
 // SecureNN+
 
