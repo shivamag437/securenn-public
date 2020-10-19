@@ -18,3 +18,11 @@ util/cbitvector.o
 util/main_gf_funcs.o
 util/sha1.o
 util/sha256.o
+BMRPassive.out
+benchmarks.csv
+util/TedKrovetzAesNiWrapperC.o
+util/aes_core.o
+util/cbitvector.o
+util/main_gf_funcs.o
+util/sha1.o
+util/sha256.o
