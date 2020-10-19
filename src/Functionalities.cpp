@@ -2141,9 +2141,9 @@ void testMaxPoolDerivative(size_t p_range, size_t q_range, size_t px, size_t py,
 }
 
 
-// SecureNN+
+// S++
 
-void exponentiation(vector<myType> &x, vector<myType> &c)
+void funcExponentiation(vector<myType> &x, vector<myType> &c)
 {
 	if (THREE_PC)
 	{
@@ -2212,7 +2212,7 @@ void testexp(vector<myType> &x)
 {	
 	vector<myType> c(1);
 
-	exponentiation(x, c);
+	funcExponentiation(x, c);
 
 	if (partyNum == PARTY_A)
 	{
@@ -2273,10 +2273,10 @@ void testdiv()
 	}
 }
 
-void sigmoid(vector<myType> &x, vector<myType> &c)
+void funcSigmoid(vector<myType> &x, vector<myType> &c)
 {
 	vector<myType> a(1), b(1);
-	exponentiation(x,a);
+	funcExponentiation(x,a);
 	b[0] = uint64_t(a[0] + floatToMyType(float(partyNum)));
 	funcDivisionMPC(a,b,c,1);
 }
@@ -2284,7 +2284,7 @@ void sigmoid(vector<myType> &x, vector<myType> &c)
 void testsigmoid(vector<myType> &x)
 {
 	vector<myType> c(1);
-	sigmoid(x, c);
+	funcSigmoid(x, c);
 	if (partyNum == PARTY_A)
 	{
 		vector<myType> temp(1);
@@ -2298,4 +2298,27 @@ void testsigmoid(vector<myType> &x)
 	{
 		sendVector<myType>(c, adversary(partyNum), 1); 
 	}
+}
+
+void funcSoftmax(vector<myType> &z, vector<myType> &smax, int k)
+{
+	myType S = floatToMyType(0);
+	for(int i=0,i<k;i++)
+	{
+		vector<myType> c(1);
+		funcExponentiation(z[i],c);
+		S = (myType) (S+c[0]);
+	}
+	
+	for(int i=0,i<k;i++)
+	{
+		funcDivisionMPC(c[i],S[i],smax[i],1);
+	}	
+
+}
+
+void testsoftmax(vector<myType> &z, int k)
+{
+	vector<myType> smax(k);
+	funcSoftmax(z,smax,k);
 }
