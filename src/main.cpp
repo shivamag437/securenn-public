@@ -155,12 +155,13 @@ int main(int argc, char** argv)
 	vector<myType> x(1);
 	vector<myType> c(1);
 	x[0] = floatToMyType(float(1));
-	// cout<<"Value of x(float to fixed): "<<x[0]<<endl;
-	// cout<<"Value of x(without func): "<<double(1)*(pow(2,13))<<endl;
+	cout<<"Value of x(float to fixed): "<<x[0]<<endl;
+	float p = MyTypetofloat(x[0]);
+	//cout<<"Value of x(without func): "<<double(1)*(pow(2,13))<<endl;
 	// double p = double(x[0])/pow(2,13);
-	// cout<<"Value of x(fixed to float): "<<p<<endl;
+	cout<<"Value of x(fixed to float): "<<p<<endl;
 	// testexp(x);
-	// testsigmoid(x);
+	//testsigmoid(x);
 
 	testdiv();
 

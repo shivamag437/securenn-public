@@ -2228,11 +2228,11 @@ void testexp(vector<myType> &x)
 	if (partyNum == PARTY_A)
 	{
 		vector<myType> temp(1);
-		uint64_t v;
+		myType v;
 		receiveVector<myType>(ref(temp), adversary(partyNum), 1);
 		// cout<<"temp  = "<<temp[0]<<endl;
 		// cout<<"c  = "<<c[0]<<endl;
-		v = (uint64_t)(c[0] + temp[0]);
+		v = (myType)(c[0] + temp[0]);
 		// cout<<"fixed point v: "<<v<<endl;
 		// double res = double(v)/pow(2,FLOAT_PRECISION);
 		// cout<<"Output from exponentiation function: "<<res<<endl;
@@ -2258,7 +2258,7 @@ void testdiv()
 	if (partyNum == PARTY_B)
 	{
 		a[0] = floatToMyType(float(0));
-		b[0] = floatToMyType(float(2));	
+		b[0] = floatToMyType(float(1));	
 	}
 
 	funcDivisionMPC(a, b, c, 1);
@@ -2266,12 +2266,12 @@ void testdiv()
 	if (partyNum == PARTY_A)
 	{
 		vector<myType> temp(1);
-		uint64_t v;
+		myType v;
 		receiveVector<myType>(ref(temp), adversary(partyNum), 1);
 		cout<<"temp  = "<<temp[0]<<endl;
 		cout<<"c  = "<<c[0]<<endl;
-		v = (uint64_t)(c[0] + temp[0]);
-		double res = double(v)/pow(2,FLOAT_PRECISION);
+		v = (myType)(c[0] + temp[0]);
+		float res = MyTypetofloat(v);
 		cout<<"\nOutput from division function: "<<res<<endl;
 	}
 	if (partyNum==PARTY_B) 

@@ -15,7 +15,7 @@ using namespace std;
 #define _aligned_free free
 #define getrandom(min, max) ((rand()%(int)(((max) + 1)-(min)))+ (min))
 #define floatToMyType(a) ((myType)(a * (1 << FLOAT_PRECISION)))
-#define MyTypetofloat(a) ((float)(a / (1 << FLOAT_PRECISION)))
+#define MyTypetofloat(a) (((float) (a) / (1 << FLOAT_PRECISION)))
 
 
 //AES and other globals
