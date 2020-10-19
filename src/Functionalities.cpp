@@ -2246,38 +2246,42 @@ void testexp(vector<myType> &x)
 
 void testdiv()
 {	
-	vector<myType> c(1);
-	vector<myType> a(1);
-	vector<myType> b(1);
+	vector<myType> c(1); // result from funcDivisionMPC()
+	vector<myType> a(1); // numerator
+	vector<myType> b(1); // denominator
 
+	//set the values for shares of a and b
 	if (partyNum == PARTY_A)
 	{
-		a[0] = floatToMyType(float(1));
-		b[0] = floatToMyType(float(0));	
+		a[0] = 1<<13;
+		b[0] = 0;	
 	}
 
 	if (partyNum == PARTY_B)
 	{
-		a[0] = floatToMyType(float(0));
-		b[0] = floatToMyType(float(1));	
+		a[0] = 0;
+		b[0] = 1<<13;	
 	}
 
+	// call funcDivisionMPC with a, b and c.
 	funcDivisionMPC(a, b, c, 1);
+
+	// add the shares and print the output
+
+	if (partyNum==PARTY_B) 
+	{
+		sendVector<myType>(c, adversary(partyNum), 1); // send Party B's share of c (output from funcDivisionMPC()) 
+	}
 
 	if (partyNum == PARTY_A)
 	{
 		vector<myType> temp(1);
-		myType v;
-		receiveVector<myType>(ref(temp), adversary(partyNum), 1);
+		uint64_t v;
+		receiveVector<myType>(ref(temp), adversary(partyNum), 1); // receive Party B's share of c and store it in temp
 		cout<<"temp  = "<<temp[0]<<endl;
 		cout<<"c  = "<<c[0]<<endl;
-		v = (myType)(c[0] + temp[0]);
-		float res = MyTypetofloat(v);
-		cout<<"\nOutput from division function: "<<res<<endl;
-	}
-	if (partyNum==PARTY_B) 
-	{
-		sendVector<myType>(c, adversary(partyNum), 1);
+		v = (uint64_t)(c[0] + temp[0]); // add the shares to store the final value in v
+		cout<<"\nOutput from division function: "<<MyTypetofloat(v)<<endl;
 	}
 }
 
