@@ -1417,6 +1417,7 @@ void funcDivisionMPC(const vector<myType> &a, const vector<myType> &b, vector<my
 
 
 
+
 //Chunk wise maximum of a vector of size rows*columns and maximum is caclulated of every 
 //column number of elements. max is a vector of size rows. maxIndex contains the index of 
 //the maximum value.
