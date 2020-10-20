@@ -67,7 +67,9 @@ void testMaxPoolDerivative(size_t p_range, size_t q_range, size_t px, size_t py,
 void testdiv();
 void funcExponentiation(vector<myType> &x, vector<myType> &c);
 void testexp(vector<myType> &x); 
-void funcSigmoid(vector<myType> &x, vector<myType> &c);
-void testsigmoid(vector<myType> &x);
-void funcSoftmax(vector<myType> &z, vector<myType> &smax, int k)
-void testsoftmax(vector<myType> &z, int k)
+void funcSigmoid(vector<myType> &x, vector<myType> &c, float gain=1.0);
+void testsigmoid(vector<myType> &x,float gain=1.0);
+void funcTanh(vector<myType> &x, vector<myType> &c);
+void testtanh(vector<myType> &x);
+void funcSoftmax(vector<myType> &z, vector<myType> &smax, int k);
+void testsoftmax();

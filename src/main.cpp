@@ -152,19 +152,31 @@ int main(int argc, char** argv)
 
 
 	//SecureNN+
-	vector<myType> x(1);
-	vector<myType> c(1);
-	x[0] = floatToMyType(float(1));
-	cout<<"Value of x(float to fixed): "<<x[0]<<endl;
-	float p = MyTypetofloat(x[0]);
-	//cout<<"Value of x(without func): "<<double(1)*(pow(2,13))<<endl;
-	// double p = double(x[0])/pow(2,13);
-	cout<<"Value of x(fixed to float): "<<p<<endl;
-	testexp(x);
-	testsigmoid(x);
+	vector<myType> x(1);/*,y(1),z(1);*/
 
-	testdiv();
+	// x[0] = floatToMyType(float(3));
+	// y[0] = floatToMyType(float(4));
+	// z[0] = floatToMyType(float(1));
 
+	// testexp(x);
+	// testexp(y);
+	// testexp(z);
+
+	// vector<myType> c(1);
+	x[0] = floatToMyType(0.7);
+	// cout<<"Value of x(float to fixed): "<<x[0]<<endl;
+	// float p = MyTypetofloat(x[0]);
+	// //cout<<"Value of x(without func): "<<double(1)*(pow(2,13))<<endl;
+	// // double p = double(x[0])/pow(2,13);
+	// cout<<"Value of x(fixed to float): "<<p<<endl;
+	// float g = 2.0;
+	// testsigmoid(x,g);
+	// testdiv();
+	testtanh(x);
+
+
+	//softmax
+	// testsoftmax();
 // /****************************** CLEAN-UP ******************************/ 
 	delete aes_common;
 	delete aes_indep;
