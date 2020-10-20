@@ -2303,14 +2303,12 @@ void testsigmoid(vector<myType> &x, float gain=1.0)
 
 void funcTanh(vector<myType> &x, vector<myType> &c)
 {
-	vector<myType> a(1), b(1), p(1), q(1);
-	a[0] = floatToMyType(2);
+	vector<myType> a(1), p(1);
+	a[0] = 2*x[0];
 	cout<<"Value of a(float to fixed): "<<a[0]<<endl;
-	funcMatMulMPC(a,x,b,1,1,1,0,0);
-	cout<<"b[0]: "<<b[0];
-	funcSigmoid(b,p);
-	funcMatMulMPC(a,p,q,1,1,1,0,0);
-	c[0] = myType(q[0] - floatToMyType(float(partyNum)));
+	funcSigmoid(a,p);
+	p[0] = 2*p[0];
+	c[0] = myType(p[0] - floatToMyType(float(partyNum)));
 }
 
 void testtanh(vector<myType> &x)
