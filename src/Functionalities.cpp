@@ -2403,10 +2403,54 @@ void funcSigmoidDerivative (vector<myType> &x, vector<myType> &c, float gain=1.0
 	funcMatMulMPC(temp1, temp2, c, 1, 1, 1, 0, 0);
 }
 
+void testSigmoidDerivative()
+{
+	vector<myType> x(1);
+	vector<myType> c(1);
+	x[0] = floatToMyType(1.5);
+
+	funcSigmoidDerivative(x,c);
+	
+	if (partyNum == PARTY_A)
+	{
+		vector<myType> temp(1);
+		receiveVector<myType>(ref(temp), adversary(partyNum), 1);
+		myType v = (myType)(c[0] + temp[0]);
+		cout<<"\nOutput from tanh function: "<<MyTypetofloat(v)<<endl;
+	}
+	if (partyNum==PARTY_B) 
+	{
+		sendVector<myType>(c, adversary(partyNum), 1); 
+	}
+
+}
+
 void funcTanhDerivative(vector<myType> &x, vector<myType> &c)
 {
 	funcTanh(x,x);
 	x[0] = x[0]*x[0];
 
 	c[0] = uint_64(1-x[0])
+}
+
+void testTanhDerivative()
+{
+	vector<myType> x(1);
+	vector<myType> c(1);
+	x[0] = floatToMyType(1.5);
+
+	funcTanhDerivative(x,c);
+	
+	if (partyNum == PARTY_A)
+	{
+		vector<myType> temp(1);
+		receiveVector<myType>(ref(temp), adversary(partyNum), 1);
+		myType v = (myType)(c[0] + temp[0]);
+		cout<<"\nOutput from tanh function: "<<MyTypetofloat(v)<<endl;
+	}
+	if (partyNum==PARTY_B) 
+	{
+		sendVector<myType>(c, adversary(partyNum), 1); 
+	}
+
 }
