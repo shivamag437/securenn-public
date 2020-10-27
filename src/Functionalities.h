@@ -73,3 +73,5 @@ void funcTanh(vector<myType> &x, vector<myType> &c);
 void testtanh(vector<myType> &x);
 void funcSoftmax(vector<myType> &z, vector<myType> &smax, int k);
 void testsoftmax();
+void funcSigmoidDerivative (vector<myType> &x, vector<myType> &c, float gain=1.0)
+void funcTanhDerivative(vector<myType> &x, vector<myType> &c)

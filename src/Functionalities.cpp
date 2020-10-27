@@ -2386,3 +2386,27 @@ void testsoftmax()
 	}
 
 }
+
+void funcSigmoidDerivative (vector<myType> &x, vector<myType> &c, float gain=1.0)
+{
+	vector<myType> temp1(1), temp2(1);
+	funcSigmoid(x,temp1, gain);
+	if (partyNum == PARTY_A){
+		temp1[0] = 1 - temp1[0];
+	}
+	else if (partyNum == PARTY_B){
+		temp1[0] = (-1)*temp1[0];
+	}
+
+	funcSigmoid(x,temp2, gain);
+
+	funcMatMulMPC(temp1, temp2, c, 1, 1, 1, 0, 0);
+}
+
+void funcTanhDerivative(vector<myType> &x, vector<myType> &c)
+{
+	funcTanh(x,x);
+	x[0] = x[0]*x[0];
+
+	c[0] = uint_64(1-x[0])
+}
