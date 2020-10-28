@@ -2143,13 +2143,13 @@ void testMaxPoolDerivative(size_t p_range, size_t q_range, size_t px, size_t py,
 
 // S++
 
-void funcExponentiation(vector<myType> &x, vector<myType> &c)
+void funcExponentiation(vector<myType> &x, vector<myType> &c, size_t size)
 {
 	if (THREE_PC)
 	{
 		
-		vector<myType> a(1);
-		vector<myType> b(1);
+		vector<myType> a(size);
+		vector<myType> b(size);
 
 		//To generate random uint_64 number
 		std::random_device rd;
@@ -2158,27 +2158,39 @@ void funcExponentiation(vector<myType> &x, vector<myType> &c)
 
 		if(PRIMARY)
 		{
-			myType z;
-			float z_dash = exp(MyTypetofloat(x[0]));
+			vector<myType> z(size);
+			float z_dash;
+
+			for (size_t i = 0; i < size; ++i){
+				z_dash = exp(MyTypetofloat(x[0]));
+				z[i] = floatToMyType(z_dash);
+			}
 			cout<<"z_dash: "<<z_dash<<endl;
-			z = floatToMyType(z_dash);
 
 			cout <<"Value of z= "<< z << endl;
 
-			vector<myType> a1(1), b0(1);
+			vector<myType> a1(size), b0(size);
 			
 			if(partyNum == PARTY_A)
 			{
 				cout<<"---------------PARTY-A-------------------"<<endl;
 
-				a[0] = dis(gen);//;
+				
+				
+				for (size_t i = 0; i < size; ++i){
+					a[i] = dis(gen);//;
+				}
 				cout<<"a0 = "<<a[0]<<endl;
 				cout<<"z = "<<z<<endl;
-				a1[0] = (z - a[0]);
+				for (size_t i = 0; i < size; ++i){
+					a1[i] = (z - a[i]);
+				}
 				cout<<"a1 = "<<a1[0]<<endl;
 				sendVector<myType>(ref(a1), adversary(partyNum), 1);
 				receiveVector<myType>(ref(b0), adversary(partyNum), 1);
-				b[0] = b0[0];
+				for (size_t i = 0; i < size; ++i){
+					b[i] = b0[i];
+				}
 				cout<<"b0: "<<b[0]<<endl;
 
 				funcMatMulMPC(a, b, c, 1, 1, 1, 0, 0);
@@ -2188,13 +2200,19 @@ void funcExponentiation(vector<myType> &x, vector<myType> &c)
 			{
 				cout<<"---------------PARTY-B-------------------"<<endl;
 
-				b[0] =  dis(gen);//srand(time(NULL));
+				for (size_t i = 0; i < size; ++i){
+					b[i] = dis(gen);//;
+				}
 				cout<<"b1 = "<<b[0]<<endl;
-				b0[0] = (z - b[0]);
+				for (size_t i = 0; i < size; ++i){
+					b0[i] = (z - b[i]);
+				}
 				cout<<"b0 = "<<b0[0]<<endl;
 				receiveVector<myType>(ref(a1), adversary(partyNum), 1);
 				sendVector<myType>(ref(b0), adversary(partyNum), 1);
-				a[0] = a1[0];
+				for (size_t i = 0; i < size; ++i){
+					a[i] = a1[i];
+				}
 				cout<<"a1 = "<<a[0]<<endl;
 				funcMatMulMPC(a, b, c, 1, 1, 1, 0, 0);
 			}
