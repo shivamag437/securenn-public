@@ -2143,13 +2143,78 @@ void testMaxPoolDerivative(size_t p_range, size_t q_range, size_t px, size_t py,
 
 // S++
 
+// void funcExponentiation(vector<myType> &x, vector<myType> &c)
+// {
+// 	if (THREE_PC)
+// 	{
+		
+// 		vector<myType> a(1);
+// 		vector<myType> b(1);
+
+// 		//To generate random uint_64 number
+// 		std::random_device rd;
+// 		std::mt19937_64 gen(rd());
+// 		std::uniform_int_distribution<uint64_t> dis;
+
+// 		if(PRIMARY)
+// 		{
+// 			myType z;
+// 			float z_dash = exp(MyTypetofloat(x[0]));
+// 			cout<<"z_dash: "<<z_dash<<endl;
+// 			z = floatToMyType(z_dash);
+
+// 			cout <<"Value of z= "<< z << endl;
+
+// 			vector<myType> a1(1), b0(1);
+			
+// 			if(partyNum == PARTY_A)
+// 			{
+// 				cout<<"---------------PARTY-A-------------------"<<endl;
+
+// 				a[0] = dis(gen);//;
+// 				cout<<"a0 = "<<a[0]<<endl;
+// 				cout<<"z = "<<z<<endl;
+// 				a1[0] = (z - a[0]);
+// 				cout<<"a1 = "<<a1[0]<<endl;
+// 				sendVector<myType>(ref(a1), adversary(partyNum), 1);
+// 				receiveVector<myType>(ref(b0), adversary(partyNum), 1);
+// 				b[0] = b0[0];
+// 				cout<<"b0: "<<b[0]<<endl;
+
+// 				funcMatMulMPC(a, b, c, 1, 1, 1, 0, 0);
+
+// 			}
+// 			if(partyNum == PARTY_B)
+// 			{
+// 				cout<<"---------------PARTY-B-------------------"<<endl;
+
+// 				b[0] =  dis(gen);//srand(time(NULL));
+// 				cout<<"b1 = "<<b[0]<<endl;
+// 				b0[0] = (z - b[0]);
+// 				cout<<"b0 = "<<b0[0]<<endl;
+// 				receiveVector<myType>(ref(a1), adversary(partyNum), 1);
+// 				sendVector<myType>(ref(b0), adversary(partyNum), 1);
+// 				a[0] = a1[0];
+// 				cout<<"a1 = "<<a[0]<<endl;
+// 				funcMatMulMPC(a, b, c, 1, 1, 1, 0, 0);
+// 			}
+// 			cout<<"Share for Party-"<<partyNum<<"is: "<<c[0];
+// 		}
+
+// 		if(HELPER)
+// 			{
+// 				funcMatMulMPC(a, b, c, 1, 1, 1, 0, 0);	
+// 			}
+// 	}
+// }
+
 void funcExponentiation(vector<myType> &x, vector<myType> &c, size_t size)
 {
 	if (THREE_PC)
 	{
 		
-		vector<myType> a(size);
-		vector<myType> b(size);
+		vector<myType> a(size, 0);
+		vector<myType> b(size, 0);
 
 		//To generate random uint_64 number
 		std::random_device rd;
@@ -2158,16 +2223,13 @@ void funcExponentiation(vector<myType> &x, vector<myType> &c, size_t size)
 
 		if(PRIMARY)
 		{
-			vector<myType> z(size);
+			vector<myType> z(size, 0);
 			float z_dash;
 
 			for (size_t i = 0; i < size; ++i){
-				z_dash = exp(MyTypetofloat(x[0]));
+				z_dash = exp(MyTypetofloat(x[i]));
 				z[i] = floatToMyType(z_dash);
 			}
-			cout<<"z_dash: "<<z_dash<<endl;
-
-			cout <<"Value of z= "<< z << endl;
 
 			vector<myType> a1(size), b0(size);
 			
@@ -2180,10 +2242,9 @@ void funcExponentiation(vector<myType> &x, vector<myType> &c, size_t size)
 				for (size_t i = 0; i < size; ++i){
 					a[i] = dis(gen);//;
 				}
-				cout<<"a0 = "<<a[0]<<endl;
-				cout<<"z = "<<z<<endl;
+
 				for (size_t i = 0; i < size; ++i){
-					a1[i] = (z - a[i]);
+					a1[i] = (z[i] - a[i]);
 				}
 				cout<<"a1 = "<<a1[0]<<endl;
 				sendVector<myType>(ref(a1), adversary(partyNum), 1);
@@ -2193,7 +2254,10 @@ void funcExponentiation(vector<myType> &x, vector<myType> &c, size_t size)
 				}
 				cout<<"b0: "<<b[0]<<endl;
 
-				funcMatMulMPC(a, b, c, 1, 1, 1, 0, 0);
+				//funcMatMulMPC(a, b, c, 1, 1, 1, 0, 0);
+				for (size_t i = 0; i < size; ++i){
+					c[i] = a[i] * b[i];
+				}
 
 			}
 			if(partyNum == PARTY_B)
@@ -2205,7 +2269,7 @@ void funcExponentiation(vector<myType> &x, vector<myType> &c, size_t size)
 				}
 				cout<<"b1 = "<<b[0]<<endl;
 				for (size_t i = 0; i < size; ++i){
-					b0[i] = (z - b[i]);
+					b0[i] = (z[i] - b[i]);
 				}
 				cout<<"b0 = "<<b0[0]<<endl;
 				receiveVector<myType>(ref(a1), adversary(partyNum), 1);
@@ -2214,21 +2278,24 @@ void funcExponentiation(vector<myType> &x, vector<myType> &c, size_t size)
 					a[i] = a1[i];
 				}
 				cout<<"a1 = "<<a[0]<<endl;
-				funcMatMulMPC(a, b, c, 1, 1, 1, 0, 0);
+				//funcMatMulMPC(a, b, c, 1, 1, 1, 0, 0);
+				for (size_t i = 0; i < size; ++i){
+					c[i] = a[i] * b[i];
+				}
 			}
 			cout<<"Share for Party-"<<partyNum<<"is: "<<c[0];
 		}
 
 		if(HELPER)
 			{
-				funcMatMulMPC(a, b, c, 1, 1, 1, 0, 0);	
+				//funcMatMulMPC(a, b, c, 1, 1, 1, 0, 0);	
 			}
 	}
 }
 void testexp(vector<myType> &x)
 {	
 	vector<myType> c(1);
-
+	cout<<"Entering exponentiation";
 	funcExponentiation(x, c);
 
 	if (partyNum == PARTY_A)
@@ -2448,7 +2515,7 @@ void funcTanhDerivative(vector<myType> &x, vector<myType> &c)
 	funcTanh(x,x);
 	x[0] = x[0]*x[0];
 
-	c[0] = uint_64(1-x[0])
+	c[0] = myType(1-x[0]);
 }
 
 void testTanhDerivative()
