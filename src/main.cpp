@@ -152,10 +152,10 @@ int main(int argc, char** argv)
 
 
 	//SecureNN+
-	vector<myType> x(1);/*,y(1),z(1);*/
+	vector<myType> x(1),y(1);/*,z(1);*/
 
 	// x[0] = floatToMyType(float(3));
-	// y[0] = floatToMyType(float(4));
+	y[0] = floatToMyType(float(2));
 	// z[0] = floatToMyType(float(1));
 
 	// testexp(x);
@@ -163,7 +163,11 @@ int main(int argc, char** argv)
 	// testexp(z);
 
 	// vector<myType> c(1);
-	x[0] = floatToMyType(0.7);
+	x[0] = floatToMyType(1);
+	x[0] = -1 * x[0];
+	cout<<"After multiplication with -1: "<<MyTypetofloat(x[0])<<endl;
+	x[0] = x[0] + y[0];
+	cout<<"After adding 2: "<<MyTypetofloat(x[0])<<endl;
 	// cout<<"Value of x(float to fixed): "<<x[0]<<endl;
 	// float p = MyTypetofloat(x[0]);
 	// //cout<<"Value of x(without func): "<<double(1)*(pow(2,13))<<endl;
@@ -172,7 +176,19 @@ int main(int argc, char** argv)
 	// float g = 2.0;
 	// testsigmoid(x,g);
 	// testdiv();
-	testtanh(x);
+	// testtanh(x);
+	x[0]=floatToMyType(1);
+	testexp(x);
+
+	vector<myType> a(3),b(3);
+	a[0] = floatToMyType(0);
+	a[1] = floatToMyType(1);
+	a[2] = floatToMyType(2);
+	b[0] = floatToMyType(0);
+	b[1] = floatToMyType(1);
+	b[2] = floatToMyType(2);
+
+	pointWiseProduct(a, b,3);
 
 
 	//softmax
