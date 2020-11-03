@@ -155,7 +155,8 @@ int main(int argc, char** argv)
 	vector<myType> x(1),y(1);/*,z(1);*/
 
 	// x[0] = floatToMyType(float(3));
-	y[0] = floatToMyType(float(2));
+	y[0] = floatToMyType(-2);
+	testtanh(y);
 	// z[0] = floatToMyType(float(1));
 
 	// testexp(x);
@@ -180,7 +181,7 @@ int main(int argc, char** argv)
 	x[0]=floatToMyType(1);
 	testexp(x);
 
-	vector<myType> a(3),b(3);
+	vector<myType> a(3),b(3),c(3);
 	a[0] = floatToMyType(0);
 	a[1] = floatToMyType(1);
 	a[2] = floatToMyType(2);
@@ -188,7 +189,7 @@ int main(int argc, char** argv)
 	b[1] = floatToMyType(1);
 	b[2] = floatToMyType(2);
 
-	pointWiseProduct(a, b,3);
+	pointWiseProduct(a, b,c,3);
 
 
 	//softmax

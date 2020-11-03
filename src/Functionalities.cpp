@@ -2265,7 +2265,7 @@ void funcExponentiation(vector<myType> &x, vector<myType> &c, size_t size)
 				// 	//funcMatMulMPC(a[i], b[i], c[i], 1, 1, 1, 0, 0);
 				// 	c[i] = a[i] * b[i];
 				// }
-				pointWiseProduct(a,b,c);
+				pointWiseProduct(a,b,c,size);
 
 			}
 			if(partyNum == PARTY_B)
@@ -2295,7 +2295,7 @@ void funcExponentiation(vector<myType> &x, vector<myType> &c, size_t size)
 				// 	//funcMatMulMPC(a[i], b[i], c[i], 1, 1, 1, 0, 0);
 				// 	c[i] = a[i] * b[i];
 				// }
-				pointWiseProduct(a,b,c);
+				pointWiseProduct(a,b,c,size);
 			}
 			//cout<<"Share for Party-"<<partyNum<<"is: "<<c[0];
 		}
@@ -2306,7 +2306,7 @@ void funcExponentiation(vector<myType> &x, vector<myType> &c, size_t size)
 				// 	//funcMatMulMPC(a[i], b[i], c[i], 1, 1, 1, 0, 0);
 				// 	c[i] = a[i] * b[i];
 				// }
-				pointWiseProduct(a,b,c);	
+				pointWiseProduct(a,b,c,size);	
 			}
 	}
 }
@@ -2338,22 +2338,24 @@ void pointWiseProduct(vector<myType> &a, vector<myType> &b, vector<myType> &c,si
 {
 	vector<myType> temp_a(size*size, 0);
 	vector<myType> temp_b(size*size, 0);
+	vector<myType> temp_c(size, 0);
 
 	for(size_t i = 0; i < size; ++i){
 		temp_a[size*i + i] = a[i];
 	}
 	funcMatMulMPC(temp_a, b, c, size, size, 1, 0, 0);
-	// if(partyNum == PARTY_B){
-	// 	sendVector<myType>(ref(temp_c), adversary(partyNum), size);
-	// }
-	// if(partyNum == PARTY_A){
-	// 	receiveVector<myType>(ref(temp_b), adversary(partyNum), size);
-	// 	addVectors(temp_b,temp_c, temp_c, size);
-	// 	for(size_t i = 0; i < size; ++i){
-	// 		cout<<MyTypetofloat(temp_c[i])<<" ";
-	// 	}
-	// 	cout<<endl;
-	// }
+
+	if(partyNum == PARTY_B){
+		sendVector<myType>(ref(temp_c), adversary(partyNum), size);
+	}
+	if(partyNum == PARTY_A){
+		receiveVector<myType>(ref(temp_b), adversary(partyNum), size);
+		addVectors(temp_b,temp_c, temp_c, size);
+		for(size_t i = 0; i < size; ++i){
+			cout<<MyTypetofloat(temp_c[i])<<" ";
+		}
+		cout<<endl;
+	}
 
 }
 

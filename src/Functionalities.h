@@ -77,4 +77,4 @@ void funcSigmoidDerivative (vector<myType> &x, vector<myType> &c, float gain=1.0
 void testSigmoidDerivative();
 void funcTanhDerivative(vector<myType> &x, vector<myType> &c);
 void testTanhDerivative();
-void pointWiseProduct(vector<myType> &a, vector<myType> &b, size_t size);
+void pointWiseProduct(vector<myType> &a, vector<myType> &b, vector<myType> &c,size_t size);
