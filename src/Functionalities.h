@@ -65,16 +65,16 @@ void testMaxPoolDerivative(size_t p_range, size_t q_range, size_t px, size_t py,
 
 //SecureNN+ functions
 void testdiv();
-void funcExponentiation(vector<myType> &x, vector<myType> &c);
-void testexp(vector<myType> &x); 
-void funcSigmoid(vector<myType> &x, vector<myType> &c, float gain=1.0);
-void testsigmoid(vector<myType> &x,float gain=1.0);
-void funcTanh(vector<myType> &x, vector<myType> &c);
-void testtanh(vector<myType> &x);
+void funcExponentiation(vector<myType> &x, vector<myType> &c, size_t size);
+void testexp(vector<myType> &x, size_t size); 
+void funcSigmoid(vector<myType> &x, vector<myType> &c, size_t size, float gain=1.0);
+void testsigmoid(vector<myType> &x, size_t size, float gain=1.0);
+void funcTanh(vector<myType> &x, vector<myType> &c, size_t size);
+void testtanh(vector<myType> &x, size_t size);
 void funcSoftmax(vector<myType> &z, vector<myType> &smax, int k);
 void testsoftmax();
-void funcSigmoidDerivative (vector<myType> &x, vector<myType> &c, float gain=1.0);
+void funcSigmoidDerivative (vector<myType> &x, vector<myType> &c, size_t size, float gain=1.0);
 void testSigmoidDerivative();
-void funcTanhDerivative(vector<myType> &x, vector<myType> &c);
+void funcTanhDerivative(vector<myType> &x, vector<myType> &c, size_t size);
 void testTanhDerivative();
 void pointWiseProduct(vector<myType> &a, vector<myType> &b, vector<myType> &c,size_t size);
