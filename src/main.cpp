@@ -152,11 +152,11 @@ int main(int argc, char** argv)
 
 
 	//SecureNN+
-	vector<myType> x(1),y(1);/*,z(1);*/
+	vector<myType> x(1024, 5),y(1024,5), z(1024, 0);/*,z(1);*/
 
 	// x[0] = floatToMyType(float(3));
-	y[0] = floatToMyType(-2);
-	testtanh(y);
+	//y[0] = floatToMyType(-2);
+	//testtanh(y);
 	// z[0] = floatToMyType(float(1));
 
 	// testexp(x);
@@ -164,32 +164,93 @@ int main(int argc, char** argv)
 	// testexp(z);
 
 	// vector<myType> c(1);
-	x[0] = floatToMyType(1);
-	x[0] = -1 * x[0];
-	cout<<"After multiplication with -1: "<<MyTypetofloat(x[0])<<endl;
-	x[0] = x[0] + y[0];
-	cout<<"After adding 2: "<<MyTypetofloat(x[0])<<endl;
+	// x[0] = floatToMyType(1);
+	// x[0] = -1 * x[0];
+	// cout<<"After multiplication with -1: "<<MyTypetofloat(x[0])<<endl;
+	// x[0] = x[0] + y[0];
+	// cout<<"After adding 2: "<<MyTypetofloat(x[0])<<endl;
 	// cout<<"Value of x(float to fixed): "<<x[0]<<endl;
 	// float p = MyTypetofloat(x[0]);
 	// //cout<<"Value of x(without func): "<<double(1)*(pow(2,13))<<endl;
 	// // double p = double(x[0])/pow(2,13);
 	// cout<<"Value of x(fixed to float): "<<p<<endl;
 	// float g = 2.0;
-	// testsigmoid(x,g);
+	
 	// testdiv();
 	// testtanh(x);
-	x[0]=floatToMyType(1);
-	testexp(x);
+	x[0]=floatToMyType(20);
+	x[1]=floatToMyType(18);
+	x[2]=floatToMyType(5);
+	x[3]=floatToMyType(-4);
+	x[4]=floatToMyType(-5);
+	
+	start_m();
+	testexp(x, 1024);
+	end_m("Exponentiation");
 
-	vector<myType> a(3),b(3),c(3);
-	a[0] = floatToMyType(0);
-	a[1] = floatToMyType(1);
-	a[2] = floatToMyType(2);
-	b[0] = floatToMyType(0);
-	b[1] = floatToMyType(1);
-	b[2] = floatToMyType(2);
+	
+	start_m();
+	funcDivisionMPC(x, y, z, 1024);
+	end_m("Division");
+	
+	start_m();
+	testsigmoid(x,1024);
+	end_m("Sigmoid");
+	
+	start_m();
+	testtanh(x, 1024);
+	end_m("TanH");
 
-	pointWiseProduct(a, b,c,3);
+	start_m();
+	testsoftmax(x, 1024);
+	end_m("softmax");
+
+	start_m();
+	testSigmoidDerivative(x, 1024);
+	end_m("Derivative of Sigmoid");
+
+	start_m();
+	testTanhDerivative(x, 1024);
+	end_m("Derivative of TanH");
+
+	// vector<myType> a(1,floatToMyType(1));
+	// vector<myType> b(1,floatToMyType(1)),c(1);
+
+	// testSigmoidDerivative(a,1);
+	// testTanhDerivative(a,1);
+	// testexp(a,1);
+	// pointWiseProduct(a,b,c,1);
+
+	// myType test = 31855933495705600 * (1<<13);
+	// cout<<"Test value: "<<test;
+
+	// vector<myType> a(3, 1),b(3, 1),c(3, 1);
+	// a[0] = floatToMyType(0);
+	// a[1] = floatToMyType(1);
+	// a[2] = floatToMyType(2);
+	// b[0] = floatToMyType(0);
+	// b[1] = floatToMyType(1);
+	// b[2] = floatToMyType(2);
+
+	// pointWiseProduct(a, b,c,3);
+	// vector<myType> S(3);
+	// vector<myType> temp(size, 1);
+
+	// S[0] = floatToMyType(1);
+	// S[1] = floatToMyType(1);
+	// S[2] = floatToMyType(1);
+
+	// cout<<"S before dot Product: ";
+	// for(int i=0;i<size;i++){
+	// 	cout<<S[i]<<" ";
+	// }
+	// cout<<endl;
+	// funcDotProductMPC(S,temp,S,size);
+	// cout<<"S after dot Product: ";
+	// for(int i=0;i<size;i++){
+	// 	cout<<S[i]<<" ";
+	// }
+	// cout<<endl;
 
 
 	//softmax
