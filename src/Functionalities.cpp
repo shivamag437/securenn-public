@@ -2533,19 +2533,21 @@ void funcSoftmax(vector<myType> &z, vector<myType> &smax, size_t size)
 	for(int i=0;i<size;i++){
 		S[0] = (myType)S[0]+temp[i];
 	}
+
+	vector<myType> Sum(size,S[0]);
 	// if(PRIMARY){
 	// 	funcReconstruct2PC(S, 1, "Denominator of Softmax");
 	// }
 
-	for(int i=0;i<size;i++)
-	{
-		vector<myType> r(1), s(1);
-		s[0] = temp[i];
-		funcDivisionMPC(s,S,r,1);
-		smax[i] = r[0];
-		// cout<<"smax_i: "<<smax[i]<<"\n";
-	}
-
+	// for(int i=0;i<size;i++)
+	// {
+	// 	vector<myType> r(1), s(1);
+	// 	s[0] = temp[i];
+	// 	funcDivisionMPC(s,S,r,1);
+	// 	smax[i] = r[0];
+	// 	// cout<<"smax_i: "<<smax[i]<<"\n";
+	// }
+	funcDivisionMPC(z,Sum,smax, size);
 }
 
 void testsoftmax(vector<myType> &z, size_t size)
@@ -2555,24 +2557,27 @@ void testsoftmax(vector<myType> &z, size_t size)
 	// z[2] = floatToMyType(0.5);
 
 	//size needs to be replaced with k in print
-	vector<myType> smax(size);
-	funcSoftmax(z,smax,size);
+	vector<myType> c(size);
+	funcSoftmax(z,c,size);
 	
+	/********** Uncomment to print Output **********/
 	// if (partyNum == PARTY_A)
 	// {
-	// 	vector<myType> temp(k);
-	// 	receiveVector<myType>(ref(temp), adversary(partyNum), k);
-	// 	for(int i=0;i<k;i++)
-	// 	{
-	// 		myType v;
-	// 		v = (myType)(smax[i] + temp[i]);
-	// 		// double res = double(v)/pow(2,FLOAT_PRECISION);
-	// 		//cout<<"\nv_"<<i<<":"<<MyTypetofloat(v)<<endl;
+	// 	vector<myType> temp(size);
+	// 	receiveVector<myType>(ref(temp), adversary(partyNum), size);
+	// 	vector<myType> v(size, 0);
+	// 	addVectors(c, temp, v, size);
+		
+		
+	// 	cout<<fixed<<"Output from tanh function: ";
+	// 	for(size_t i = 0; i < size; ++i){
+	// 		cout<<MyTypetofloat(v[i])<<" ";
 	// 	}
+	// 	cout<<endl;
 	// }
 	// if (partyNum==PARTY_B) 
 	// {
-	// 	sendVector<myType>(smax, adversary(partyNum), k); 
+	// 	sendVector<myType>(c, adversary(partyNum), size); 
 	// }
 
 }
