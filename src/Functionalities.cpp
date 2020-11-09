@@ -64,7 +64,7 @@ void funcReconstruct2PC(const vector<myType> &a, size_t size, string str)
 	
 		cout << str << ": ";
 		for (size_t i = 0; i < size; ++i)
-			print_linear(temp[i], DEBUG_PRINT);
+			print_linear(temp[i], "FLOAT");
 		cout << endl;
 	}
 }
@@ -2313,36 +2313,37 @@ void funcExponentiation(vector<myType> &x, vector<myType> &c, size_t size)
 void testexp(vector<myType> &x, size_t size)
 {	
 	vector<myType> c(size, 0);
-	cout<<"Entering exponentiation";
+	//cout<<"Entering exponentiation";
 	funcExponentiation(x, c, size);
 
-	if (partyNum == PARTY_A)
-	{
-		vector<myType> temp(size, 0);
-		vector<myType> v(size, 0);
-		receiveVector<myType>(ref(temp), adversary(partyNum), size);
-		// cout<<"temp  = "<<temp[0]<<endl;
-		// cout<<"c  = "<<c[0]<<endl;
-		addVectors(c, temp, v, size);
-		// cout<<"fixed point v: "<<v<<endl;
-		// double res = double(v)/pow(2,FLOAT_PRECISION);
-		cout<<"Output from exponentiation function: ";
-		for(size_t i = 0; i < size; ++i){
-			cout<<MyTypetofloat(v[i])<<" ";
-		}
-		cout<<endl;
-	}
-	if (partyNum==PARTY_B) 
-	{
-		sendVector<myType>(ref(c), adversary(partyNum), size);
-	}
+	/********** Uncomment to print Output **********/
+	// if (partyNum == PARTY_A)
+	// {
+	// 	vector<myType> temp(size, 0);
+	// 	vector<myType> v(size, 0);
+	// 	receiveVector<myType>(ref(temp), adversary(partyNum), size);
+	// 	// cout<<"temp  = "<<temp[0]<<endl;
+	// 	// cout<<"c  = "<<c[0]<<endl;
+	// 	addVectors(c, temp, v, size);
+	// 	// cout<<"fixed point v: "<<v<<endl;
+	// 	// double res = double(v)/pow(2,FLOAT_PRECISION);
+	// 	cout<<"Output from exponentiation function: ";
+	// 	for(size_t i = 0; i < size; ++i){
+	// 		cout<<MyTypetofloat(v[i])<<" ";
+	// 	}
+	// 	cout<<endl;
+	// }
+	// if (partyNum==PARTY_B) 
+	// {
+	// 	sendVector<myType>(ref(c), adversary(partyNum), size);
+	// }
 }
 
 void pointWiseProduct(vector<myType> &a, vector<myType> &b, vector<myType> &c, size_t size)
 {
 	vector<myType> temp_a(1);
-	vector<myType> temp_b(size, 0);
-	vector<myType> temp_c(size, 0);
+	vector<myType> temp_b(1, 0);
+	vector<myType> temp_c(1, 0);
 
 	/***** Diagonalization Method********/
 
@@ -2360,17 +2361,22 @@ void pointWiseProduct(vector<myType> &a, vector<myType> &b, vector<myType> &c, s
 
 	/****** Uncomment to print output *******/
 
-	if(partyNum == PARTY_B){
-		sendVector<myType>(ref(c), adversary(partyNum), size);
-	}
-	if(partyNum == PARTY_A){
-		receiveVector<myType>(ref(temp_b), adversary(partyNum), size);
-		addVectors(temp_b,c, temp_c, size);
-		for(size_t i = 0; i < size; ++i){
-			cout<<MyTypetofloat(temp_c[i])<<" ";
-		}
-		cout<<endl;
-	}
+	// if (partyNum == PARTY_A)
+	// {
+	// 	vector<myType> temp(size);
+	// 	receiveVector<myType>(ref(temp), adversary(partyNum), size);
+	// 	vector<myType> v(size, 0);
+	// 	addVectors(c, temp, v, size);
+	// 	cout<<fixed<<"Output from pointwise function: ";
+	// 	for(size_t i = 0; i < size; ++i){
+	// 		cout<<MyTypetofloat(v[i])<<" ";
+	// 	}
+	// 	cout<<endl;
+	// }
+	// if (partyNum==PARTY_B) 
+	// {
+	// 	sendVector<myType>(c, adversary(partyNum), size); 
+	// }
 
 }
 
@@ -2402,23 +2408,23 @@ void testdiv()
 
 	// add the shares and print the output
 
-	if (partyNum==PARTY_B) 
-	{
-		sendVector<myType>(c, adversary(partyNum), 2); // send Party B's share of c (output from funcDivisionMPC()) 
-	}
+	// if (partyNum==PARTY_B) 
+	// {
+	// 	sendVector<myType>(c, adversary(partyNum), 2); // send Party B's share of c (output from funcDivisionMPC()) 
+	// }
 
-	if (partyNum == PARTY_A)
-	{
-		vector<myType> temp(2);
-		vector<myType> v(2, 0);
-		receiveVector<myType>(ref(temp), adversary(partyNum), 2);
-		addVectors(c, temp, v, 2);
-		cout<<fixed<<"Output from Division function: ";
-		for(size_t i = 0; i < 2; ++i){
-			cout<<MyTypetofloat(v[i])<<" ";
-		}
-		cout<<endl;
-	}
+	// if (partyNum == PARTY_A)
+	// {
+	// 	vector<myType> temp(2);
+	// 	vector<myType> v(2, 0);
+	// 	receiveVector<myType>(ref(temp), adversary(partyNum), 2);
+	// 	addVectors(c, temp, v, 2);
+	// 	cout<<fixed<<"Output from Division function: ";
+	// 	for(size_t i = 0; i < 2; ++i){
+	// 		cout<<MyTypetofloat(v[i])<<" ";
+	// 	}
+	// 	cout<<endl;
+	// }
 }
 
 void funcSigmoid(vector<myType> &x, vector<myType> &c, size_t size, float gain=1.0)
@@ -2428,7 +2434,8 @@ void funcSigmoid(vector<myType> &x, vector<myType> &c, size_t size, float gain=1
 	for (size_t i = 0; i < size; ++i){
 		x[i] = floatToMyType(MyTypetofloat(x[i])*gain);
 	}
-	cout<<"x = "<<MyTypetofloat(x[0]);
+	// cout<<"size: "<<size;
+	// cout<<"x = "<<MyTypetofloat(x[0]);
 	funcExponentiation(x,a, size);
 	//b[0] = myType(a[0] + floatToMyType(float(partyNum)));
 	
@@ -2442,22 +2449,24 @@ void testsigmoid(vector<myType> &x, size_t size, float gain=1.0)
 {
 	vector<myType> c(size);
 	funcSigmoid(x, c, size, gain);
-	if (partyNum == PARTY_A)
-	{
-		vector<myType> temp(size);
-		receiveVector<myType>(ref(temp), adversary(partyNum), size);
-		vector<myType> v(size, 0);
-		addVectors(c, temp, v, size);
-		cout<<fixed<<"Output from sigmoid function: ";
-		for(size_t i = 0; i < size; ++i){
-			cout<<MyTypetofloat(v[i])<<" ";
-		}
-		cout<<endl;
-	}
-	if (partyNum==PARTY_B) 
-	{
-		sendVector<myType>(c, adversary(partyNum), size); 
-	}
+	
+	/********** Uncomment to print output ***********/
+	// if (partyNum == PARTY_A)
+	// {
+	// 	vector<myType> temp(size);
+	// 	receiveVector<myType>(ref(temp), adversary(partyNum), size);
+	// 	vector<myType> v(size, 0);
+	// 	addVectors(c, temp, v, size);
+	// 	cout<<fixed<<"Output from sigmoid function: ";
+	// 	for(size_t i = 0; i < size; ++i){
+	// 		cout<<MyTypetofloat(v[i])<<" ";
+	// 	}
+	// 	cout<<endl;
+	// }
+	// if (partyNum==PARTY_B) 
+	// {
+	// 	sendVector<myType>(c, adversary(partyNum), size); 
+	// }
 }
 
 void funcTanh(vector<myType> &x, vector<myType> &c, size_t size)
@@ -2482,30 +2491,32 @@ void testtanh(vector<myType> &x, size_t size)
 	vector<myType> c(size);
 	funcTanh(x, c, size);
 
-	if (partyNum == PARTY_A)
-	{
-		vector<myType> temp(size);
-		receiveVector<myType>(ref(temp), adversary(partyNum), size);
-		vector<myType> v(size, 0);
-		addVectors(c, temp, v, size);
-		cout<<fixed<<"Output from tanh function: ";
-		for(size_t i = 0; i < size; ++i){
-			cout<<MyTypetofloat(v[i])<<" ";
-		}
-		cout<<endl;
-	}
-	if (partyNum==PARTY_B) 
-	{
-		sendVector<myType>(c, adversary(partyNum), size); 
-	}
+	/********** Uncomment to print Output **********/
+	// if (partyNum == PARTY_A)
+	// {
+	// 	vector<myType> temp(size);
+	// 	receiveVector<myType>(ref(temp), adversary(partyNum), size);
+	// 	vector<myType> v(size, 0);
+	// 	addVectors(c, temp, v, size);
+		
+		
+	// 	cout<<fixed<<"Output from tanh function: ";
+	// 	for(size_t i = 0; i < size; ++i){
+	// 		cout<<MyTypetofloat(v[i])<<" ";
+	// 	}
+	// 	cout<<endl;
+	// }
+	// if (partyNum==PARTY_B) 
+	// {
+	// 	sendVector<myType>(c, adversary(partyNum), size); 
+	// }
 }
 
 void funcSoftmax(vector<myType> &z, vector<myType> &smax, size_t size)
 {
-	vector<myType> S(1,0);
+	vector<myType> S(1,floatToMyType(0));
 	vector<myType> temp(size, 0);
 	vector<myType> c(size, 1);
-	cout<<"\n";
 
 	// for(int i=0;i<size;i++)
 	// {
@@ -2520,13 +2531,16 @@ void funcSoftmax(vector<myType> &z, vector<myType> &smax, size_t size)
 
 	funcExponentiation(z,temp,size);
 	for(int i=0;i<size;i++){
-		S[0] += temp[i];
+		S[0] = (myType)S[0]+temp[i];
 	}
+	// if(PRIMARY){
+	// 	funcReconstruct2PC(S, 1, "Denominator of Softmax");
+	// }
 
 	for(int i=0;i<size;i++)
 	{
 		vector<myType> r(1), s(1);
-		s[0] = c[i];
+		s[0] = temp[i];
 		funcDivisionMPC(s,S,r,1);
 		smax[i] = r[0];
 		// cout<<"smax_i: "<<smax[i]<<"\n";
@@ -2534,33 +2548,32 @@ void funcSoftmax(vector<myType> &z, vector<myType> &smax, size_t size)
 
 }
 
-void testsoftmax()
+void testsoftmax(vector<myType> &z, size_t size)
 {
-	size_t k = 10;
-	vector<myType> z(k);
 	// z[0] = floatToMyType(1.5);
 	// z[1] = floatToMyType(-2.0);
 	// z[2] = floatToMyType(0.5);
 
-	vector<myType> smax(k);
-	funcSoftmax(z,smax,k);
+	//size needs to be replaced with k in print
+	vector<myType> smax(size);
+	funcSoftmax(z,smax,size);
 	
-	if (partyNum == PARTY_A)
-	{
-		vector<myType> temp(k);
-		receiveVector<myType>(ref(temp), adversary(partyNum), k);
-		for(int i=0;i<k;i++)
-		{
-			myType v;
-			v = (myType)(smax[i] + temp[i]);
-			// double res = double(v)/pow(2,FLOAT_PRECISION);
-			cout<<"\nv_"<<i<<":"<<MyTypetofloat(v)<<endl;
-		}
-	}
-	if (partyNum==PARTY_B) 
-	{
-		sendVector<myType>(smax, adversary(partyNum), k); 
-	}
+	// if (partyNum == PARTY_A)
+	// {
+	// 	vector<myType> temp(k);
+	// 	receiveVector<myType>(ref(temp), adversary(partyNum), k);
+	// 	for(int i=0;i<k;i++)
+	// 	{
+	// 		myType v;
+	// 		v = (myType)(smax[i] + temp[i]);
+	// 		// double res = double(v)/pow(2,FLOAT_PRECISION);
+	// 		//cout<<"\nv_"<<i<<":"<<MyTypetofloat(v)<<endl;
+	// 	}
+	// }
+	// if (partyNum==PARTY_B) 
+	// {
+	// 	sendVector<myType>(smax, adversary(partyNum), k); 
+	// }
 
 }
 
@@ -2573,31 +2586,36 @@ void funcSigmoidDerivative (vector<myType> &x, vector<myType> &c, size_t size, f
 	}
 	
 	for(int i=0;i<size;i++){
-		a[i] = (-1)*a[i] + floatToMyType((float)partyNum);
+		a[i] = floatToMyType((float)partyNum) - a[i];
 	}
 
-	funcMatMulMPC(a, b, c, size, size, size, 0, 0);
+	pointWiseProduct(a, b, c, size);
 }
 
-void testSigmoidDerivative()
+void testSigmoidDerivative(vector<myType> &x, size_t size)
 {
-	vector<myType> x(1);
-	vector<myType> c(1);
-	x[0] = floatToMyType(1.5);
+	vector<myType> c(size);
+	funcSigmoidDerivative(x,c,size);
 
-	funcSigmoidDerivative(x,c, 1);
-	
-	if (partyNum == PARTY_A)
-	{
-		vector<myType> temp(1);
-		receiveVector<myType>(ref(temp), adversary(partyNum), 1);
-		myType v = (myType)(c[0] + temp[0]);
-		cout<<"\nOutput from tanh function: "<<MyTypetofloat(v)<<endl;
-	}
-	if (partyNum==PARTY_B) 
-	{
-		sendVector<myType>(c, adversary(partyNum), 1); 
-	}
+	/********** Uncomment to print Output **********/
+	// if (partyNum == PARTY_A)
+	// {
+	// 	vector<myType> temp(size);
+	// 	receiveVector<myType>(ref(temp), adversary(partyNum), size);
+	// 	vector<myType> v(size, 0);
+	// 	addVectors(c, temp, v, size);
+		
+		
+	// 	cout<<fixed<<"Output from derivative of sigmoid: ";
+	// 	for(size_t i = 0; i < size; ++i){
+	// 		cout<<MyTypetofloat(v[i])<<" ";
+	// 	}
+	// 	cout<<endl;
+	// }
+	// if (partyNum==PARTY_B) 
+	// {
+	// 	sendVector<myType>(c, adversary(partyNum), size); 
+	// }
 
 }
 
@@ -2609,29 +2627,35 @@ void funcTanhDerivative(vector<myType> &x, vector<myType> &c, size_t size)
 	}
 
 	for(int i=0;i<size;i++){
-		c[i] = myType(1-x[i]);
+		c[i] = floatToMyType((float)partyNum) - x[i];
 	}
 	
 }
 
-void testTanhDerivative()
+void testTanhDerivative(vector<myType> &x, size_t size)
 {
-	vector<myType> x(1);
-	vector<myType> c(1);
-	x[0] = floatToMyType(1.5);
+	vector<myType> c(size);
 
 	funcTanhDerivative(x,c, 1);
 	
-	if (partyNum == PARTY_A)
-	{
-		vector<myType> temp(1);
-		receiveVector<myType>(ref(temp), adversary(partyNum), 1);
-		myType v = (myType)(c[0] + temp[0]);
-		cout<<"\nOutput from tanh function: "<<MyTypetofloat(v)<<endl;
-	}
-	if (partyNum==PARTY_B) 
-	{
-		sendVector<myType>(c, adversary(partyNum), 1); 
-	}
+	/********** Uncomment to print Output **********/
+	// if (partyNum == PARTY_A)
+	// {
+	// 	vector<myType> temp(size);
+	// 	receiveVector<myType>(ref(temp), adversary(partyNum), size);
+	// 	vector<myType> v(size, 0);
+	// 	addVectors(c, temp, v, size);
+		
+		
+	// 	cout<<fixed<<"Output from derivative of tanh: ";
+	// 	for(size_t i = 0; i < size; ++i){
+	// 		cout<<MyTypetofloat(v[i])<<" ";
+	// 	}
+	// 	cout<<endl;
+	// }
+	// if (partyNum==PARTY_B) 
+	// {
+	// 	sendVector<myType>(c, adversary(partyNum), size); 
+	// }
 
 }
