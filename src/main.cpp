@@ -151,8 +151,10 @@ int main(int argc, char** argv)
 	cout << "----------------------------------" << endl << endl;  
 
 
+	size_t size = 1024;
+
 	//SecureNN+
-	vector<myType> x(1024, 5),y(1024,5), z(1024, 0);/*,z(1);*/
+	vector<myType> x(size, 5),y(size,5), z(size, 0);/*,z(1);*/
 
 	// x[0] = floatToMyType(float(3));
 	//y[0] = floatToMyType(-2);
@@ -185,32 +187,32 @@ int main(int argc, char** argv)
 	x[4]=floatToMyType(-5);
 	
 	start_m();
-	testexp(x, 1024);
+	testexp(x, size);
 	end_m("Exponentiation");
 
 	
 	start_m();
-	funcDivisionMPC(x, y, z, 1024);
+	funcDivisionMPC(x, y, z, size);
 	end_m("Division");
 	
 	start_m();
-	testsigmoid(x,1024);
+	testsigmoid(x,size);
 	end_m("Sigmoid");
 	
 	start_m();
-	testtanh(x, 1024);
+	testtanh(x, size);
 	end_m("TanH");
 
 	start_m();
-	testsoftmax(x, 1024);
+	testsoftmax(x, size);
 	end_m("softmax");
 
 	start_m();
-	testSigmoidDerivative(x, 1024);
+	testSigmoidDerivative(x, size);
 	end_m("Derivative of Sigmoid");
 
 	start_m();
-	testTanhDerivative(x, 1024);
+	testTanhDerivative(x, size);
 	end_m("Derivative of TanH");
 
 	// vector<myType> a(1,floatToMyType(1));
