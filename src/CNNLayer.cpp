@@ -148,6 +148,12 @@ void CNNLayer::forward(const vector<myType>& inputActivation)
 	{
 		funcRELUPrime3PC(y, reluPrimeLarge, size_x/(px*py));
 		funcSelectShares3PC(y, reluPrimeLarge, activations, size_x/(px*py));
+		// cout<<"y :";
+		// for(size_t i = 0; i < size_x/(px*py); ++i){
+		// 	cout<<fixed<<MyTypetofloat(y[i])<<" ";
+		// }
+		// cout<<endl;
+		// funcSigmoid(y, activations, size_x/(px*py));
 	}
 
 	if (FOUR_PC)
