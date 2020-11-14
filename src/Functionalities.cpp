@@ -2317,26 +2317,26 @@ void testexp(vector<myType> &x, size_t size)
 	funcExponentiation(x, c, size);
 
 	/********** Uncomment to print Output **********/
-	// if (partyNum == PARTY_A)
-	// {
-	// 	vector<myType> temp(size, 0);
-	// 	vector<myType> v(size, 0);
-	// 	receiveVector<myType>(ref(temp), adversary(partyNum), size);
-	// 	// cout<<"temp  = "<<temp[0]<<endl;
-	// 	// cout<<"c  = "<<c[0]<<endl;
-	// 	addVectors(c, temp, v, size);
-	// 	// cout<<"fixed point v: "<<v<<endl;
-	// 	// double res = double(v)/pow(2,FLOAT_PRECISION);
-	// 	cout<<"Output from exponentiation function: ";
-	// 	for(size_t i = 0; i < size; ++i){
-	// 		cout<<MyTypetofloat(v[i])<<" ";
-	// 	}
-	// 	cout<<endl;
-	// }
-	// if (partyNum==PARTY_B) 
-	// {
-	// 	sendVector<myType>(ref(c), adversary(partyNum), size);
-	// }
+	if (partyNum == PARTY_A)
+	{
+		vector<myType> temp(size, 0);
+		vector<myType> v(size, 0);
+		receiveVector<myType>(ref(temp), adversary(partyNum), size);
+		// cout<<"temp  = "<<temp[0]<<endl;
+		// cout<<"c  = "<<c[0]<<endl;
+		addVectors(c, temp, v, size);
+		// cout<<"fixed point v: "<<v<<endl;
+		// double res = double(v)/pow(2,FLOAT_PRECISION);
+		cout<<"Output from exponentiation function: ";
+		for(size_t i = 0; i < size; ++i){
+			cout<<MyTypetofloat(v[i])<<" ";
+		}
+		cout<<endl;
+	}
+	if (partyNum==PARTY_B) 
+	{
+		sendVector<myType>(ref(c), adversary(partyNum), size);
+	}
 }
 
 void pointWiseProduct(vector<myType> &a, vector<myType> &b, vector<myType> &c, size_t size)

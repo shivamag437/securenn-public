@@ -215,10 +215,10 @@ int main(int argc, char** argv)
 	testTanhDerivative(x, size);
 	end_m("Derivative of TanH");
 
-	// vector<myType> a(1,floatToMyType(1));
+	vector<myType> a(1,floatToMyType(1));
 	// vector<myType> b(1,floatToMyType(1)),c(1);
 
-	// testSigmoidDerivative(a,1);
+	testexp(a,1);
 	// testTanhDerivative(a,1);
 	// testexp(a,1);
 	// pointWiseProduct(a,b,c,1);
