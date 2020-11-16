@@ -2634,7 +2634,7 @@ void testTanhDerivative(vector<myType> &x, size_t size)
 {
 	vector<myType> c(size);
 
-	funcTanhDerivative(x,c, 1);
+	funcTanhDerivative(x,c, size);
 	
 	/********** Uncomment to print Output **********/
 	// if (partyNum == PARTY_A)
@@ -2656,4 +2656,51 @@ void testTanhDerivative(vector<myType> &x, size_t size)
 	// 	sendVector<myType>(c, adversary(partyNum), size); 
 	// }
 
+}
+
+void funcTaylorExp(vector<myType> &x, vector<myType> &c, size_t size)
+{
+	vector<myType> numerator(size);
+	int denominator = 1;
+
+	for(int i = 0; i<size; i++){
+		numerator[i] = x[i];
+		c[i] = numerator[i] + floatToMyType((float)partyNum);
+	}
+
+	for(int i = 2; i<=4; i++){
+		pointWiseProduct(numerator,x,numerator,size);
+		denominator *= (myType)(i);
+		for(int j=0 ; j<size; j++){
+			c[j] += floatToMyType(MyTypetofloat(numerator[j])/denominator);
+		}
+
+	}
+}
+
+void testTaylorExp(vector<myType> &x, size_t size)
+{
+	vector<myType> c(size);
+
+	funcTaylorExp(x,c, size);
+	
+	/********** Uncomment to print Output **********/
+	// if (partyNum == PARTY_A)
+	// {
+	// 	vector<myType> temp(size);
+	// 	receiveVector<myType>(ref(temp), adversary(partyNum), size);
+	// 	vector<myType> v(size, 0);
+	// 	addVectors(c, temp, v, size);
+		
+		
+	// 	cout<<fixed<<"Output from taylor series exponentiation: ";
+	// 	for(size_t i = 0; i < size; ++i){
+	// 		cout<<MyTypetofloat(v[i])<<" ";
+	// 	}
+	// 	cout<<endl;
+	// }
+	// if (partyNum==PARTY_B) 
+	// {
+	// 	sendVector<myType>(c, adversary(partyNum), size); 
+	// }
 }

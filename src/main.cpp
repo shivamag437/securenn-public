@@ -186,7 +186,7 @@ int main(int argc, char** argv)
 	x[3]=floatToMyType(-4);
 	x[4]=floatToMyType(-5);
 	int i = 0;
-	int iterations = 1000;
+	int iterations = 1;
 	
 	start_m();
 	for(i = 0;i<iterations;++i)
@@ -223,6 +223,11 @@ int main(int argc, char** argv)
 	for(i = 0;i<iterations;++i)
 		testTanhDerivative(x, size);
 	end_m("Derivative of TanH");
+
+	start_m();
+	vector<myType> test(1,floatToMyType(0.3));
+	testTaylorExp(test, 1);
+	end_m("Taylor Expansion");
 
 	vector<myType> a(1,floatToMyType(1));
 	// vector<myType> b(1,floatToMyType(1)),c(1);
