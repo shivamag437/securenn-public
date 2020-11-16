@@ -186,7 +186,100 @@ int main(int argc, char** argv)
 	x[3]=floatToMyType(-4);
 	x[4]=floatToMyType(-5);
 	int i = 0;
+
+	/******************64x16********************/
+	cout<<"----------64x64------------"<<"\n";
 	int iterations = 1000;
+	
+	start_m();
+	for(i = 0;i<iterations;++i)
+		testexp(x, size);
+	end_m("Exponentiation");
+
+	
+	start_m();
+	for(i = 0;i<iterations;++i)
+		funcDivisionMPC(x, y, z, size);
+	end_m("Division");
+	
+	start_m();
+	for(i = 0;i<iterations;++i)
+		testsigmoid(x,size);
+	end_m("Sigmoid");
+	
+	start_m();
+	for(i = 0;i<iterations;++i)
+		testtanh(x, size);
+	end_m("TanH");
+
+	start_m();
+	for(i = 0;i<iterations;++i)
+		testsoftmax(x, size);
+	end_m("softmax");
+
+	start_m();
+	for(i = 0;i<iterations;++i)
+		testSigmoidDerivative(x, size);
+	end_m("Derivative of Sigmoid");
+
+	start_m();
+	for(i = 0;i<iterations;++i)
+		testTanhDerivative(x, size);
+	end_m("Derivative of TanH");
+
+	start_m();
+	testTaylorExp(x, size);
+	end_m("Taylor Expansion");
+
+
+	/******************128×128********************/
+	cout<<"----------128x128------------"<<"\n";
+	int iterations = 16384;
+	
+	start_m();
+	for(i = 0;i<iterations;++i)
+		testexp(x, size);
+	end_m("Exponentiation");
+
+	
+	start_m();
+	for(i = 0;i<iterations;++i)
+		funcDivisionMPC(x, y, z, size);
+	end_m("Division");
+	
+	start_m();
+	for(i = 0;i<iterations;++i)
+		testsigmoid(x,size);
+	end_m("Sigmoid");
+	
+	start_m();
+	for(i = 0;i<iterations;++i)
+		testtanh(x, size);
+	end_m("TanH");
+
+	start_m();
+	for(i = 0;i<iterations;++i)
+		testsoftmax(x, size);
+	end_m("softmax");
+
+	start_m();
+	for(i = 0;i<iterations;++i)
+		testSigmoidDerivative(x, size);
+	end_m("Derivative of Sigmoid");
+
+	start_m();
+	for(i = 0;i<iterations;++i)
+		testTanhDerivative(x, size);
+	end_m("Derivative of TanH");
+
+	start_m();
+	testTaylorExp(x, size);
+	end_m("Taylor Expansion");
+
+
+	/******************576×20********************/
+	cout<<"----------576x20------------"<<"\n";
+	int iterations = 11520;
 	
 	start_m();
 	for(i = 0;i<iterations;++i)
