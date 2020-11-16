@@ -2236,7 +2236,6 @@ void funcExponentiation(vector<myType> &x, vector<myType> &c, size_t size)
 			
 			if(partyNum == PARTY_A)
 			{
-				cout<<"---------------PARTY-A-------------------"<<endl;
 
 				
 				
@@ -2252,13 +2251,11 @@ void funcExponentiation(vector<myType> &x, vector<myType> &c, size_t size)
 
 				subtractVectors(z, a, a1, size);
 				
-				cout<<"a1 = "<<a1[0]<<endl;
 				sendVector<myType>(ref(a1), adversary(partyNum), size);
 				receiveVector<myType>(ref(b0), adversary(partyNum), size);
 				for (size_t i = 0; i < size; ++i){
 					b[i] = b0[i];
 				}
-				cout<<"b0: "<<b[0]<<endl;
 
 				//funcMatMulMPC(a, b, c, 1, 1, 1, 0, 0);
 				// for (size_t i = 0; i < size; ++i){
@@ -2270,26 +2267,22 @@ void funcExponentiation(vector<myType> &x, vector<myType> &c, size_t size)
 			}
 			if(partyNum == PARTY_B)
 			{
-				cout<<"---------------PARTY-B-------------------"<<endl;
 
 				// for (size_t i = 0; i < size; ++i){
 				// 	b[i] = dis(gen);//;
 				// }
 
 				populateRandomVector<myType>(b, size, "COMMON", "POSITIVE");
-				cout<<"b1 = "<<b[0]<<endl;
 				// for (size_t i = 0; i < size; ++i){
 				// 	b0[i] = (z[i] - b[i]);
 				// }
 
 				subtractVectors(z, b, b0, size);
-				cout<<"b0 = "<<b0[0]<<endl;
 				receiveVector<myType>(ref(a1), adversary(partyNum), size);
 				sendVector<myType>(ref(b0), adversary(partyNum), size);
 				for (size_t i = 0; i < size; ++i){
 					a[i] = a1[i];
 				}
-				cout<<"a1 = "<<a[0]<<endl;
 				//funcMatMulMPC(a, b, c, 1, 1, 1, 0, 0);
 				// for (size_t i = 0; i < size; ++i){
 				// 	//funcMatMulMPC(a[i], b[i], c[i], 1, 1, 1, 0, 0);
@@ -2317,26 +2310,26 @@ void testexp(vector<myType> &x, size_t size)
 	funcExponentiation(x, c, size);
 
 	/********** Uncomment to print Output **********/
-	if (partyNum == PARTY_A)
-	{
-		vector<myType> temp(size, 0);
-		vector<myType> v(size, 0);
-		receiveVector<myType>(ref(temp), adversary(partyNum), size);
-		// cout<<"temp  = "<<temp[0]<<endl;
-		// cout<<"c  = "<<c[0]<<endl;
-		addVectors(c, temp, v, size);
-		// cout<<"fixed point v: "<<v<<endl;
-		// double res = double(v)/pow(2,FLOAT_PRECISION);
-		cout<<"Output from exponentiation function: ";
-		for(size_t i = 0; i < size; ++i){
-			cout<<MyTypetofloat(v[i])<<" ";
-		}
-		cout<<endl;
-	}
-	if (partyNum==PARTY_B) 
-	{
-		sendVector<myType>(ref(c), adversary(partyNum), size);
-	}
+	// if (partyNum == PARTY_A)
+	// {
+	// 	vector<myType> temp(size, 0);
+	// 	vector<myType> v(size, 0);
+	// 	receiveVector<myType>(ref(temp), adversary(partyNum), size);
+	// 	// cout<<"temp  = "<<temp[0]<<endl;
+	// 	// cout<<"c  = "<<c[0]<<endl;
+	// 	addVectors(c, temp, v, size);
+	// 	// cout<<"fixed point v: "<<v<<endl;
+	// 	// double res = double(v)/pow(2,FLOAT_PRECISION);
+	// 	cout<<"Output from exponentiation function: ";
+	// 	for(size_t i = 0; i < size; ++i){
+	// 		cout<<MyTypetofloat(v[i])<<" ";
+	// 	}
+	// 	cout<<endl;
+	// }
+	// if (partyNum==PARTY_B) 
+	// {
+	// 	sendVector<myType>(ref(c), adversary(partyNum), size);
+	// }
 }
 
 void pointWiseProduct(vector<myType> &a, vector<myType> &b, vector<myType> &c, size_t size)

@@ -185,34 +185,43 @@ int main(int argc, char** argv)
 	x[2]=floatToMyType(5);
 	x[3]=floatToMyType(-4);
 	x[4]=floatToMyType(-5);
+	int i = 0;
+	int iterations = 1000;
 	
 	start_m();
-	testexp(x, size);
+	for(i = 0;i<iterations;++i)
+		testexp(x, size);
 	end_m("Exponentiation");
 
 	
 	start_m();
-	funcDivisionMPC(x, y, z, size);
+	for(i = 0;i<iterations;++i)
+		funcDivisionMPC(x, y, z, size);
 	end_m("Division");
 	
 	start_m();
-	testsigmoid(x,size);
+	for(i = 0;i<iterations;++i)
+		testsigmoid(x,size);
 	end_m("Sigmoid");
 	
 	start_m();
-	testtanh(x, size);
+	for(i = 0;i<iterations;++i)
+		testtanh(x, size);
 	end_m("TanH");
 
 	start_m();
-	testsoftmax(x, size);
+	for(i = 0;i<iterations;++i)
+		testsoftmax(x, size);
 	end_m("softmax");
 
 	start_m();
-	testSigmoidDerivative(x, size);
+	for(i = 0;i<iterations;++i)
+		testSigmoidDerivative(x, size);
 	end_m("Derivative of Sigmoid");
 
 	start_m();
-	testTanhDerivative(x, size);
+	for(i = 0;i<iterations;++i)
+		testTanhDerivative(x, size);
 	end_m("Derivative of TanH");
 
 	vector<myType> a(1,floatToMyType(1));
