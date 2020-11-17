@@ -189,7 +189,7 @@ int main(int argc, char** argv)
 
 	/******************64x16********************/
 	cout<<"----------64x64------------"<<"\n";
-	int iterations = 1000;
+	int iterations = 100;
 	
 	start_m();
 	for(i = 0;i<iterations;++i)
@@ -230,11 +230,20 @@ int main(int argc, char** argv)
 	start_m();
 	testTaylorExp(x, size);
 	end_m("Taylor Expansion");
+
+	delete x;
+	delete y;
+	delete z;
 
 
 	/******************128×128********************/
 	cout<<"----------128x128------------"<<"\n";
-	iterations = 16384;
+	iterations = 100;
+
+	size = 16384;
+
+	//SecureNN+
+	vector<myType> x(size, 5),y(size,5), z(size, 0);/*,z(1);*/
 	
 	start_m();
 	for(i = 0;i<iterations;++i)
@@ -275,11 +284,20 @@ int main(int argc, char** argv)
 	start_m();
 	testTaylorExp(x, size);
 	end_m("Taylor Expansion");
+
+	delete x;
+	delete y;
+	delete z;
 
 
 	/******************576×20********************/
 	cout<<"----------576x20------------"<<"\n";
-	iterations = 11520;
+	iterations = 100;
+
+	size = 11520;
+
+	//SecureNN+
+	vector<myType> x(size, 5),y(size,5), z(size, 0);/*,z(1);*/
 	
 	start_m();
 	for(i = 0;i<iterations;++i)
@@ -320,6 +338,10 @@ int main(int argc, char** argv)
 	start_m();
 	testTaylorExp(x, size);
 	end_m("Taylor Expansion");
+
+	delete x;
+	delete y;
+	delete z;
 
 	vector<myType> a(1,floatToMyType(1));
 	// vector<myType> b(1,floatToMyType(1)),c(1);
