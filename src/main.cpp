@@ -189,7 +189,7 @@ int main(int argc, char** argv)
 
 	/******************64x16********************/
 	cout<<"----------64x64------------"<<"\n";
-	int iterations = 100;
+	int iterations = 10;
 	
 	start_m();
 	for(i = 0;i<iterations;++i)
@@ -238,7 +238,6 @@ int main(int argc, char** argv)
 
 	/******************128×128********************/
 	cout<<"----------128x128------------"<<"\n";
-	iterations = 100;
 
 	size = 16384;
 
@@ -288,7 +287,6 @@ int main(int argc, char** argv)
 
 	/******************576×20********************/
 	cout<<"----------576x20------------"<<"\n";
-	iterations = 100;
 
 	size = 11520;
 
