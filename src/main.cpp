@@ -189,42 +189,36 @@ int main(int argc, char** argv)
 
 	/******************64x16********************/
 	cout<<"----------64x64------------"<<"\n";
-	int iterations = 10;
+	int iterations = 1;
 	
 	start_m();
-	for(i = 0;i<iterations;++i)
-		testexp(x, size);
+
+	testexp(x, size);
 	end_m("Exponentiation");
 
 	
 	start_m();
-	for(i = 0;i<iterations;++i)
-		funcDivisionMPC(x, y, z, size);
+	funcDivisionMPC(x, y, z, size);
 	end_m("Division");
 	
 	start_m();
-	for(i = 0;i<iterations;++i)
-		testsigmoid(x,size);
+	testsigmoid(x,size);
 	end_m("Sigmoid");
 	
 	start_m();
-	for(i = 0;i<iterations;++i)
-		testtanh(x, size);
+	testtanh(x, size);
 	end_m("TanH");
 
 	start_m();
-	for(i = 0;i<iterations;++i)
-		testsoftmax(x, size);
+	testsoftmax(x, size);
 	end_m("softmax");
 
 	start_m();
-	for(i = 0;i<iterations;++i)
-		testSigmoidDerivative(x, size);
+	testSigmoidDerivative(x, size);
 	end_m("Derivative of Sigmoid");
 
 	start_m();
-	for(i = 0;i<iterations;++i)
-		testTanhDerivative(x, size);
+	testTanhDerivative(x, size);
 	end_m("Derivative of TanH");
 
 	start_m();
@@ -245,39 +239,32 @@ int main(int argc, char** argv)
 	vector<myType> a(size, 5),b(size,5), c(size, 0);/*,z(1);*/
 	
 	start_m();
-	for(i = 0;i<iterations;++i)
-		testexp(a, size);
+	testexp(a, size);
 	end_m("Exponentiation");
 
 	
 	start_m();
-	for(i = 0;i<iterations;++i)
-		funcDivisionMPC(b, a, c, size);
+	funcDivisionMPC(b, a, c, size);
 	end_m("Division");
 	
 	start_m();
-	for(i = 0;i<iterations;++i)
-		testsigmoid(a,size);
+	testsigmoid(a,size);
 	end_m("Sigmoid");
 	
 	start_m();
-	for(i = 0;i<iterations;++i)
-		testtanh(a, size);
+	testtanh(a, size);
 	end_m("TanH");
 
 	start_m();
-	for(i = 0;i<iterations;++i)
-		testsoftmax(a, size);
+	testsoftmax(a, size);
 	end_m("softmax");
 
 	start_m();
-	for(i = 0;i<iterations;++i)
-		testSigmoidDerivative(a, size);
+	testSigmoidDerivative(a, size);
 	end_m("Derivative of Sigmoid");
 
 	start_m();
-	for(i = 0;i<iterations;++i)
-		testTanhDerivative(a, size);
+	testTanhDerivative(a, size);
 	end_m("Derivative of TanH");
 
 	start_m();
