@@ -231,9 +231,9 @@ int main(int argc, char** argv)
 	testTaylorExp(x, size);
 	end_m("Taylor Expansion");
 
-	delete x;
-	delete y;
-	delete z;
+	x.clear();
+	y.clear();
+	z.clear();
 
 
 	/******************128×128********************/
@@ -243,51 +243,47 @@ int main(int argc, char** argv)
 	size = 16384;
 
 	//SecureNN+
-	vector<myType> x(size, 5),y(size,5), z(size, 0);/*,z(1);*/
+	vector<myType> a(size, 5),b(size,5), c(size, 0);/*,z(1);*/
 	
 	start_m();
 	for(i = 0;i<iterations;++i)
-		testexp(x, size);
+		testexp(a, size);
 	end_m("Exponentiation");
 
 	
 	start_m();
 	for(i = 0;i<iterations;++i)
-		funcDivisionMPC(x, y, z, size);
+		funcDivisionMPC(b, a, c, size);
 	end_m("Division");
 	
 	start_m();
 	for(i = 0;i<iterations;++i)
-		testsigmoid(x,size);
+		testsigmoid(a,size);
 	end_m("Sigmoid");
 	
 	start_m();
 	for(i = 0;i<iterations;++i)
-		testtanh(x, size);
+		testtanh(a, size);
 	end_m("TanH");
 
 	start_m();
 	for(i = 0;i<iterations;++i)
-		testsoftmax(x, size);
+		testsoftmax(a, size);
 	end_m("softmax");
 
 	start_m();
 	for(i = 0;i<iterations;++i)
-		testSigmoidDerivative(x, size);
+		testSigmoidDerivative(a, size);
 	end_m("Derivative of Sigmoid");
 
 	start_m();
 	for(i = 0;i<iterations;++i)
-		testTanhDerivative(x, size);
+		testTanhDerivative(a, size);
 	end_m("Derivative of TanH");
 
 	start_m();
-	testTaylorExp(x, size);
+	testTaylorExp(a, size);
 	end_m("Taylor Expansion");
-
-	delete x;
-	delete y;
-	delete z;
 
 
 	/******************576×20********************/
@@ -297,56 +293,52 @@ int main(int argc, char** argv)
 	size = 11520;
 
 	//SecureNN+
-	vector<myType> x(size, 5),y(size,5), z(size, 0);/*,z(1);*/
+	vector<myType> d(size, 5),e(size,5), f(size, 0);/*,z(1);*/
 	
 	start_m();
 	for(i = 0;i<iterations;++i)
-		testexp(x, size);
+		testexp(d, size);
 	end_m("Exponentiation");
 
 	
 	start_m();
 	for(i = 0;i<iterations;++i)
-		funcDivisionMPC(x, y, z, size);
+		funcDivisionMPC(d, e, f, size);
 	end_m("Division");
 	
 	start_m();
 	for(i = 0;i<iterations;++i)
-		testsigmoid(x,size);
+		testsigmoid(d,size);
 	end_m("Sigmoid");
 	
 	start_m();
 	for(i = 0;i<iterations;++i)
-		testtanh(x, size);
+		testtanh(d, size);
 	end_m("TanH");
 
 	start_m();
 	for(i = 0;i<iterations;++i)
-		testsoftmax(x, size);
+		testsoftmax(d, size);
 	end_m("softmax");
 
 	start_m();
 	for(i = 0;i<iterations;++i)
-		testSigmoidDerivative(x, size);
+		testSigmoidDerivative(d, size);
 	end_m("Derivative of Sigmoid");
 
 	start_m();
 	for(i = 0;i<iterations;++i)
-		testTanhDerivative(x, size);
+		testTanhDerivative(d, size);
 	end_m("Derivative of TanH");
 
 	start_m();
-	testTaylorExp(x, size);
+	testTaylorExp(d, size);
 	end_m("Taylor Expansion");
 
-	delete x;
-	delete y;
-	delete z;
-
-	vector<myType> a(1,floatToMyType(1));
+	//vector<myType> a(1,floatToMyType(1));
 	// vector<myType> b(1,floatToMyType(1)),c(1);
 
-	testexp(a,1);
+	//testexp(a,1);
 	// testTanhDerivative(a,1);
 	// testexp(a,1);
 	// pointWiseProduct(a,b,c,1);
