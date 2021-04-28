@@ -137,31 +137,37 @@ int main(int argc, char** argv)
 	// testMaxPoolDerivative(8, 8, 4, 4, 50, NUM_ITERATIONS);
 
 	whichNetwork += " train";
-	train(network, config);
+	// train(network, config); //uncomment to run
 
 	// whichNetwork += " test";
 	// test(network);
 
 
+// uncomment this chunk to run SecureNN
+	// end_m(whichNetwork);
+	// cout << "----------------------------------" << endl;  	
+	// cout << NUM_OF_PARTIES << "PC code, P" << partyNum << endl;
+	// cout << NUM_ITERATIONS << " iterations, " << whichNetwork << ", batch size " << MINI_BATCH_SIZE << endl;
+	// cout << "----------------------------------" << endl << endl;  
 
-	end_m(whichNetwork);
-	cout << "----------------------------------" << endl;  	
-	cout << NUM_OF_PARTIES << "PC code, P" << partyNum << endl;
-	cout << NUM_ITERATIONS << " iterations, " << whichNetwork << ", batch size " << MINI_BATCH_SIZE << endl;
-	cout << "----------------------------------" << endl << endl;  
 
+	size_t size = 1;
 
-	size_t size = 1024;
+	//S++
+	// vector<myType> x(size, 5),y(size,5), z(size, 0);/*,z(1);*/
+	
+	// x[0] = floatToMyType(float(17.8));
+	// vector<myType> int_x(1), frac_x(1);
+	// frac_x[0] = EXTRACT_FRAC(x[0]);
+	// cout<<"Fractional part of x: "<<MyTypetofloat(frac_x[0]);
+	// int_x[0] = x[0] - frac_x[0];
+	// cout<<"Integer part of x: "<<MyTypetofloat(int_x[0]);
 
-	//SecureNN+
-	vector<myType> x(size, 5),y(size,5), z(size, 0);/*,z(1);*/
-
-	// x[0] = floatToMyType(float(3));
-	//y[0] = floatToMyType(-2);
+	
+	// y[0] = floatToMyType(-2);
 	//testtanh(y);
 	// z[0] = floatToMyType(float(1));
 
-	// testexp(x);
 	// testexp(y);
 	// testexp(z);
 
@@ -180,145 +186,145 @@ int main(int argc, char** argv)
 	
 	// testdiv();
 	// testtanh(x);
-	x[0]=floatToMyType(20);
-	x[1]=floatToMyType(18);
-	x[2]=floatToMyType(5);
-	x[3]=floatToMyType(-4);
-	x[4]=floatToMyType(-5);
-	int i = 0;
+	// x[0]=floatToMyType(20);
+	// x[1]=floatToMyType(18);
+	// x[2]=floatToMyType(5);
+	// x[3]=floatToMyType(-4);
+	// x[4]=floatToMyType(-5);
+	// int i = 0;
 
-	/******************64x16********************/
-	cout<<"----------64x64------------"<<"\n";
-	int iterations = 1;
+	// /******************64x16********************/
+	// cout<<"----------64x64------------"<<"\n";
+	// int iterations = 1;
 	
-	start_m();
+	// start_m();
 
-	testexp(x, size);
-	end_m("Exponentiation");
+	// testexp(x, size);
+	// end_m("Exponentiation");
 
 	
-	start_m();
-	funcDivisionMPC(x, y, z, size);
-	end_m("Division");
+	// start_m();
+	// funcDivisionMPC(x, y, z, size);
+	// end_m("Division");
 	
-	start_m();
-	testsigmoid(x,size);
-	end_m("Sigmoid");
+	// start_m();
+	// testsigmoid(x,size);
+	// end_m("Sigmoid");
 	
-	start_m();
-	testtanh(x, size);
-	end_m("TanH");
+	// start_m();
+	// testtanh(x, size);
+	// end_m("TanH");
 
-	start_m();
-	testsoftmax(x, size);
-	end_m("softmax");
+	// start_m();
+	// testsoftmax(x, size);
+	// end_m("softmax");
 
-	start_m();
-	testSigmoidDerivative(x, size);
-	end_m("Derivative of Sigmoid");
+	// start_m();
+	// testSigmoidDerivative(x, size);
+	// end_m("Derivative of Sigmoid");
 
-	start_m();
-	testTanhDerivative(x, size);
-	end_m("Derivative of TanH");
+	// start_m();
+	// testTanhDerivative(x, size);
+	// end_m("Derivative of TanH");
 
-	start_m();
-	testTaylorExp(x, size);
-	end_m("Taylor Expansion");
+	// start_m();
+	// testTaylorExp(x, size);
+	// end_m("Taylor Expansion");
 
-	x.clear();
-	y.clear();
-	z.clear();
+	// x.clear();
+	// y.clear();
+	// z.clear();
 
 
 	/******************128×128********************/
-	cout<<"----------128x128------------"<<"\n";
+	// cout<<"----------128x128------------"<<"\n";
 
-	size = 16384;
+	// size = 16384;
 
-	//SecureNN+
-	vector<myType> a(size, 5),b(size,5), c(size, 0);/*,z(1);*/
+	// //SecureNN+
+	// vector<myType> a(size, 5),b(size,5), c(size, 0);/*,z(1);*/
 	
-	start_m();
-	testexp(a, size);
-	end_m("Exponentiation");
+	// start_m();
+	// testexp(a, size);
+	// end_m("Exponentiation");
 
 	
-	start_m();
-	funcDivisionMPC(b, a, c, size);
-	end_m("Division");
+	// start_m();
+	// funcDivisionMPC(b, a, c, size);
+	// end_m("Division");
 	
-	start_m();
-	testsigmoid(a,size);
-	end_m("Sigmoid");
+	// start_m();
+	// testsigmoid(a,size);
+	// end_m("Sigmoid");
 	
-	start_m();
-	testtanh(a, size);
-	end_m("TanH");
+	// start_m();
+	// testtanh(a, size);
+	// end_m("TanH");
 
-	start_m();
-	testsoftmax(a, size);
-	end_m("softmax");
+	// start_m();
+	// testsoftmax(a, size);
+	// end_m("softmax");
 
-	start_m();
-	testSigmoidDerivative(a, size);
-	end_m("Derivative of Sigmoid");
+	// start_m();
+	// testSigmoidDerivative(a, size);
+	// end_m("Derivative of Sigmoid");
 
-	start_m();
-	testTanhDerivative(a, size);
-	end_m("Derivative of TanH");
+	// start_m();
+	// testTanhDerivative(a, size);
+	// end_m("Derivative of TanH");
 
-	start_m();
-	testTaylorExp(a, size);
-	end_m("Taylor Expansion");
+	// start_m();
+	// testTaylorExp(a, size);
+	// end_m("Taylor Expansion");
 
 
 	/******************576×20********************/
-	cout<<"----------576x20------------"<<"\n";
+	// cout<<"----------576x20------------"<<"\n";
 
-	size = 11520;
+	// size = 11520;
 
-	//SecureNN+
-	vector<myType> d(size, 5),e(size,5), f(size, 0);/*,z(1);*/
+	// //SecureNN+
+	// vector<myType> d(size, 5),e(size,5), f(size, 0);/*,z(1);*/
 	
-	start_m();
-	for(i = 0;i<iterations;++i)
-		testexp(d, size);
-	end_m("Exponentiation");
+	// start_m();
+	// for(i = 0;i<iterations;++i)
+	// 	testexp(d, size);
+	// end_m("Exponentiation");
 
 	
-	start_m();
-	for(i = 0;i<iterations;++i)
-		funcDivisionMPC(d, e, f, size);
-	end_m("Division");
+	// start_m();
+	// for(i = 0;i<iterations;++i)
+	// 	funcDivisionMPC(d, e, f, size);
+	// end_m("Division");
 	
-	start_m();
-	for(i = 0;i<iterations;++i)
-		testsigmoid(d,size);
-	end_m("Sigmoid");
+	// start_m();
+	// for(i = 0;i<iterations;++i)
+	// 	testsigmoid(d,size);
+	// end_m("Sigmoid");
 	
-	start_m();
-	for(i = 0;i<iterations;++i)
-		testtanh(d, size);
-	end_m("TanH");
+	// start_m();
+	// for(i = 0;i<iterations;++i)
+	// 	testtanh(d, size);
+	// end_m("TanH");
 
-	start_m();
-	for(i = 0;i<iterations;++i)
-		testsoftmax(d, size);
-	end_m("softmax");
+	// start_m();
+	// for(i = 0;i<iterations;++i)
+	// 	testsoftmax(d, size);
+	// end_m("softmax");
 
-	start_m();
-	for(i = 0;i<iterations;++i)
-		testSigmoidDerivative(d, size);
-	end_m("Derivative of Sigmoid");
+	// start_m();
+	// for(i = 0;i<iterations;++i)
+	// 	testSigmoidDerivative(d, size);
+	// end_m("Derivative of Sigmoid");
 
-	start_m();
-	for(i = 0;i<iterations;++i)
-		testTanhDerivative(d, size);
-	end_m("Derivative of TanH");
+	// start_m();
+	// for(i = 0;i<iterations;++i)
+	// 	testTanhDerivative(d, size);
+	// end_m("Derivative of TanH");
 
-	start_m();
-	testTaylorExp(d, size);
-	end_m("Taylor Expansion");
+	// start_m();
+	// testTaylorExp(d, size);
+	// end_m("Taylor Expansion");
 
 	//vector<myType> a(1,floatToMyType(1));
 	// vector<myType> b(1,floatToMyType(1)),c(1);
@@ -359,6 +365,26 @@ int main(int argc, char** argv)
 	// }
 	// cout<<endl;
 
+	/*** check SplitFraction() ***/
+
+	// vector<myType> x(size),frac_x(size),int_x(size);
+	// x[0] = floatToMyType(1.5);
+	// funcSplitFraction(x,frac_x,int_x,size);
+
+	/*** check funcPrivateCompareMPC_2 ***/
+	// vector<myType> x(size),r(size),m(size);
+	// x[0] = floatToMyType(1);
+	// r[0] = floatToMyType(5);
+	// cout<<"my x is: "<<x[0]<<endl;
+	// cout<<"r is: "<<r[0]<<endl;
+	// funcPrivateCompareMPC_2(x, r, m, size);
+
+	//***** check funcRELUPrime3PC() ****/
+	vector<myType> x(size),r(size);
+	x[0] = floatToMyType(-10);
+	// r[0] = floatToMyType(5);
+	funcRELUMPC(x, r, size);
+	funcReconstruct2PC(r, size, "The comparison x > r returned");
 
 	//softmax
 	// testsoftmax();

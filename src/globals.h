@@ -10,6 +10,16 @@
 #include <limits.h>
 using namespace std;
 
+// uint64_t create_fraction_extractor(int precision)
+// {
+// 	uint64_t res = 1;
+// 	for (int i = 1; i < precision; i++)
+// 	{
+// 		res << 1;
+// 		res++;
+// 	}
+// }
+
 //Macros
 #define _aligned_malloc(size,alignment) aligned_alloc(alignment,size)
 #define _aligned_free free
@@ -51,8 +61,8 @@ extern int NUM_OF_PARTIES;
 #define	NON_PRIMARY (partyNum == PARTY_C or partyNum == PARTY_D)
 #define HELPER (partyNum == PARTY_C)
 #define MPC (FOUR_PC or THREE_PC)
-
-
+#define FRAC_EXTRACTOR (myType)(1<<FLOAT_PRECISION) - 1 // S++
+#define EXTRACT_FRAC(x) FRAC_EXTRACTOR & x // S++
 
 //Neural Network globals.
 //Batch size has to be a power of two

@@ -593,7 +593,7 @@ void funcPrivateCompareMPC(const vector<smallType> &share_m, const vector<myType
 				{
 					betaPrime[index2] = 1;
 					break;
-				}	
+				}
 			}
 		}
 	}
@@ -2208,11 +2208,116 @@ void testMaxPoolDerivative(size_t p_range, size_t q_range, size_t px, size_t py,
 // 	}
 // }
 
+
+void funcPrivateCompareMPC_2(vector<myType> &x, vector<myType> &r, vector<myType> &m, size_t size)
+{
+	vector<myType> y(size);
+	
+	if(PRIMARY)
+	{
+		for(int i = 0; i < size; i++)
+		{
+			y[i] = x[i] - myType(1-partyNum)*(r[i]);
+		}
+
+		funcRELUPrime3PC(y, m, size);
+		funcReconstruct2PC(m, size, "The comparison x > r returned");
+		funcReconstruct2PC(y, size, "The subtraction x - r returned");
+	}
+	
+	if(HELPER)
+	{
+		funcRELUPrime3PC(y, m, size);
+	}
+
+}
+
+void funcFractionExtractor(vector<myType> &x, vector<myType> &int_x, vector<myType> &frac_x, size_t size)
+{
+	for(int i = 0; i < size; i++)
+	{
+		// cout<<"\nx: "<<x[i];
+		frac_x[i] = EXTRACT_FRAC(x[i]);
+		// cout<<"\nFrac_x: "<<frac_x[i];
+		int_x[i] = x[i] - frac_x[i];
+		// cout<<"\nInt_x: "<<int_x[i];
+	}
+}
+
+void funcSplitFraction(vector<myType> &x, vector<myType> &int_x, vector<myType> &frac_x, size_t size)
+{
+	// cout<<"\nx: "<<x[0];
+	if(THREE_PC)
+	{
+		vector<smallType> etaDP(size);
+		vector<smallType> etaP(size);
+		vector<myType> r(size);
+		vector<smallType> bit_shares(size*BIT_SIZE);
+
+		for(int i = 0; i < size; i++)
+		{
+			r[i] = floatToMyType(1);
+		}
+		funcFractionExtractor(x, int_x, frac_x, size);
+		populateBitsVector(etaDP, "COMMON", size);
+
+		if (HELPER)
+		{
+			vector<smallType> bit_shares_x_1(size*BIT_SIZE);
+			vector<smallType> bit_shares_x_2(size*BIT_SIZE);
+			sharesOfBits(bit_shares_x_1, bit_shares_x_2, frac_x, size, "INDEP");
+			sendVector<smallType>(bit_shares_x_1, PARTY_A, size*BIT_SIZE);
+			sendVector<smallType>(bit_shares_x_2, PARTY_B, size*BIT_SIZE);
+		}
+		if (PRIMARY)
+		{
+			receiveVector<smallType>(bit_shares, PARTY_C, size*BIT_SIZE);
+		}
+
+		// funcPrivateCompareMPC(bit_shares, r, etaDP, etaP, size, BIT_SIZE);
+		// cout<<"\n\n"<<etaP[0]<<"\n\n";
+		
+		// Uncomment to print output
+	// 	if (partyNum == PARTY_A)
+	// 	{
+	// 		vector<myType> temp1(size);
+	// 		vector<myType> temp2(size);
+	// 		receiveVector<myType>(ref(temp1), adversary(partyNum), size);
+	// 		receiveVector<myType>(ref(temp2), adversary(partyNum), size);
+	// 		vector<myType> v1(size, 0);
+	// 		vector<myType> v2(size, 0);
+	// 		addVectors(frac_x, temp1, v1, size);
+	// 		addVectors(int_x, temp2, v2, size);
+			
+			
+	// 		cout<<fixed<<"Output from funcSplitFrac: ";
+	// 		for(size_t i = 0; i < size; ++i){
+	// 			cout<<"\nFrac reconstructed: "<<MyTypetofloat(v1[i])<<" ";
+	// 			cout<<"\nInt reconstructed: "<<MyTypetofloat(v2[i])<<" ";
+	// 		}
+	// 		cout<<endl;
+	// 	}
+
+	// 	if (partyNum==PARTY_B) 
+	// 	{
+	// 		sendVector<myType>(frac_x, adversary(partyNum), size);
+	// 		sendVector<myType>(int_x, adversary(partyNum), size);
+	// 	}
+	}
+}
+
+
+
 void funcExponentiation(vector<myType> &x, vector<myType> &c, size_t size)
 {
+	// funcSplitFrac()
+	// frac -> TaylorSeries
+	// int -> intExp
+	// 
+	
 	if (THREE_PC)
 	{
-		
+		// int_x = 
 		vector<myType> a(size, 0);
 		vector<myType> b(size, 0);
 
