@@ -2333,10 +2333,20 @@ void funcSplitFraction(vector<myType> &x, vector<myType> &int_x, vector<myType> 
 }
 
 void funcIntegerExp(vector<myType> &x, vector<myType> &c, size_t size){
-	
+	// x = .>29 : in this case, make it = 29
+
+	// y = .<-29: in this case, make it = -29
+
+	// x ^ y = -29< . <29: in this case:
+		// reshare value in the ring Z_59
+			// private compare for all values, multiply by respective shares of 
+			// the value and add them all up. 
+			// it'll be zero for the values that returned 0 in private compare 
+			// and 1 for only one value
+
 }
 
-void funcExponentiationReturns(vector<myType> &x, vector<myType> &c, size_t size)
+void funcExponentiation_2(vector<myType> &x, vector<myType> &c, size_t size)
 {
 	vector<myType> int_x(size), frac_x(size);
 	vector<myType> exp_int(size), exp_frac(size);

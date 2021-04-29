@@ -56,7 +56,7 @@ extern int NUM_OF_PARTIES;
 #define PARTY_S 4
 
 #define PRIME_NUMBER 67
-#define EXP_RING 58			//S++
+#define EXP_RING 59			//S++
 #define EXP_RING_LL -29		//S++
 #define EXP_RING_UL 29		//S++
 #define FLOAT_PRECISION 13
