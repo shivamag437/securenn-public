@@ -25,7 +25,7 @@ using namespace std;
 #define _aligned_free free
 #define getrandom(min, max) ((rand()%(int)(((max) + 1)-(min)))+ (min))
 #define floatToMyType(a) ((myType)(a * (1 << FLOAT_PRECISION)))
-#define MyTypetofloat(a) (((float) ((int64_t)a) / (1 << FLOAT_PRECISION)))
+#define MyTypetofloat(a) (((float) ((int64_t)a) / (1 << FLOAT_PRECISION)))  //S++
 
 
 //AES and other globals
@@ -56,6 +56,9 @@ extern int NUM_OF_PARTIES;
 #define PARTY_S 4
 
 #define PRIME_NUMBER 67
+#define EXP_RING 58			//S++
+#define EXP_RING_LL -29		//S++
+#define EXP_RING_UL 29		//S++
 #define FLOAT_PRECISION 13
 #define PRIMARY (partyNum == PARTY_A or partyNum == PARTY_B)
 #define	NON_PRIMARY (partyNum == PARTY_C or partyNum == PARTY_D)
