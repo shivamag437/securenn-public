@@ -2209,18 +2209,44 @@ void testMaxPoolDerivative(size_t p_range, size_t q_range, size_t px, size_t py,
 // }
 
 
-void funcPrivateCompareMPC_2(vector<myType> &x, vector<myType> &r, vector<myType> &m, size_t size)
+void funcPrivateCompareMPC_2(vector<myType> &x, vector<myType> &r, vector<myType> &m, size_t size, char op = ">") //Verify if function works for op = "<"
 {
 	vector<myType> y(size);
 	
 	if(PRIMARY)
 	{
-		for(int i = 0; i < size; i++)
+		if(op == ">")
 		{
-			y[i] = x[i] - myType(1-partyNum)*(r[i]);
+			for(int i = 0; i < size; i++)
+			{
+				y[i] = x[i] - myType(1-partyNum)*(r[i]);
+			}
+
+			funcRELUPrime3PC(y, m, size);
 		}
 
-		funcRELUPrime3PC(y, m, size);
+		if(op == "<")
+		{
+			for(int i = 0; i < size; i++)
+			{
+				y[i] = myType(1-partyNum)*(r[i]) - x[i];
+			}
+
+			funcRELUPrime3PC(y, m, size);
+		}
+
+		if(op == "=")
+		{
+			vector<myType> lesserThan(size), greaterThan(size); 
+			funcPrivateCompareMPC_2(x, r, lesserThan, "<");
+			funcPrivateCompareMPC_2(x, r, greaterThan, ">");
+			for(int i = 0; i < size; i++)
+			{
+				m[i] = myType(1-partyNum) - (lesserThan[i] + greaterThan[i]);
+			}
+		}
+
+		//test
 		funcReconstruct2PC(m, size, "The comparison x > r returned");
 		funcReconstruct2PC(y, size, "The subtraction x - r returned");
 	}
@@ -2304,6 +2330,38 @@ void funcSplitFraction(vector<myType> &x, vector<myType> &int_x, vector<myType> 
 	// 		sendVector<myType>(int_x, adversary(partyNum), size);
 	// 	}
 	}
+}
+
+void funcIntegerExp(vector<myType> &x, vector<myType> &c, size_t size){
+	
+}
+
+void funcExponentiationReturns(vector<myType> &x, vector<myType> &c, size_t size)
+{
+	vector<myType> int_x(size), frac_x(size);
+	vector<myType> exp_int(size), exp_frac(size);
+
+	funcSplitFraction(x, int_x, frac_x, size);
+
+	vector<myType> comp1(size), compMinus1(size);
+
+	funcPrivateCompareMPC_2(frac_x, floatToMyType(1), comp, "<");
+	funcPrivateCompareMPC_2(frac_x, floatToMyType(-1), compMinus1, ">");
+
+	for(int i = 0; i<size;i++){
+		//frac_x[i] = frac_x[i] - ((partyNum * floatToMyType(1)) - comp[i]) - ( compMinus1[i] - (partyNum * floatToMyType(1)) );    // frac_x = frac_x - (frac_x > 1) - ( (frac_x > -1) - 1 )
+		frac_x[i] = frac_x[i] + comp[i] - compMinus1[i];
+		//int_x[i] = int_x[i] + ((partyNum * floatToMyType(1)) - comp[i]) + ( compMinus1[i] - (partyNum * floatToMyType(1)) );
+		int_x[i] = int_x[i] - comp[i] + compMinus1[i];
+	}
+
+	funcTaylorExp(frac_x, exp_frac, size);
+
+	funcIntegerExp(int_x, exp_int, size);
+
+	pointWiseProduct(int_x, frac_x, c, size);
+
+
 }
 
 
