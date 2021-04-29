@@ -63,7 +63,7 @@ void testReluPrime(size_t r, size_t c, size_t iter);
 void testMaxPool(size_t p_range, size_t q_range, size_t px, size_t py, size_t D, size_t iter);
 void testMaxPoolDerivative(size_t p_range, size_t q_range, size_t px, size_t py, size_t D, size_t iter);
 
-//SecureNN+ functions
+//S++ functions
 void testdiv();
 void funcPrivateCompareMPC_2(vector<myType> &x, vector<myType> &r, vector<myType> &m, size_t size);
 void funcSplitFraction(vector<myType> &x, vector<myType> &int_x, vector<myType> &frac_x, size_t size);
