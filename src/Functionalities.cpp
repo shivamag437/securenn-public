@@ -854,7 +854,8 @@ void funcComputeMSB3PC(const vector<myType> &a, vector<myType> &b, size_t size)
 			r2[i] = aes_indep->randModuloOdd();
 		}
 
-		addModuloOdd<myType, myType>(r1, r2, r, size);		
+		addModuloOdd<myType, myType>(r1, r2, r, size);	
+		// funcReconstruct2PC(c, size, "Value of x");	
 		sharesOfBits(bit_shares_r_1, bit_shares_r_2, r, size, "INDEP");
 		sharesOfLSB(LSB_shares_1, LSB_shares_2, r, size, "INDEP");
 
@@ -871,7 +872,9 @@ void funcComputeMSB3PC(const vector<myType> &a, vector<myType> &b, size_t size)
 		receiveTwoVectors<myType>(ri, LSB_shares, PARTY_C, size, size);
 
 		addModuloOdd<myType, myType>(a, a, c, size);
+		//funcReconstruct2PC(c, size, "Value of 2a");
 		addModuloOdd<myType, myType>(c, ri, c, size);
+		//funcReconstruct2PC(c, size, "Value of x + y");
 
 		thread *threads = new thread[2];
 
@@ -2351,18 +2354,20 @@ void funcExponentiation_2(vector<myType> &x, vector<myType> &c, size_t size)
 	vector<myType> int_x(size), frac_x(size);
 	vector<myType> exp_int(size), exp_frac(size);
 
+	vector<myType> one(size,floatToMyType(1)), minus_one(size,floatToMyType(-1));
+
 	funcSplitFraction(x, int_x, frac_x, size);
 
 	vector<myType> comp1(size), compMinus1(size);
 
-	funcPrivateCompareMPC_2(frac_x, floatToMyType(1), comp, "<");
-	funcPrivateCompareMPC_2(frac_x, floatToMyType(-1), compMinus1, ">");
+	funcPrivateCompareMPC_2(frac_x, one, comp1, "<");
+	funcPrivateCompareMPC_2(frac_x, minus_one, compMinus1, ">");
 
 	for(int i = 0; i<size;i++){
 		//frac_x[i] = frac_x[i] - ((partyNum * floatToMyType(1)) - comp[i]) - ( compMinus1[i] - (partyNum * floatToMyType(1)) );    // frac_x = frac_x - (frac_x > 1) - ( (frac_x > -1) - 1 )
-		frac_x[i] = frac_x[i] + comp[i] - compMinus1[i];
+		frac_x[i] = frac_x[i] + comp1[i] - compMinus1[i];
 		//int_x[i] = int_x[i] + ((partyNum * floatToMyType(1)) - comp[i]) + ( compMinus1[i] - (partyNum * floatToMyType(1)) );
-		int_x[i] = int_x[i] - comp[i] + compMinus1[i];
+		int_x[i] = int_x[i] - comp1[i] + compMinus1[i];
 	}
 
 	funcTaylorExp(frac_x, exp_frac, size);

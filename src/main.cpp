@@ -383,8 +383,8 @@ int main(int argc, char** argv)
 	vector<myType> x(size),r(size);
 	x[0] = floatToMyType(-10);
 	// r[0] = floatToMyType(5);
-	funcRELUMPC(x, r, size);
-	funcReconstruct2PC(r, size, "The comparison x > r returned");
+	funcComputeMSB3PC(x, r, size);
+	funcReconstruct2PC(r, size, "MSB(-20)");
 
 	//softmax
 	// testsoftmax();
