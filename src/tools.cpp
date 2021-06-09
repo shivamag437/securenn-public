@@ -556,7 +556,10 @@ smallType subtractModPrime(smallType a, smallType b)
 		return a;
 	else 
 	{
-		b = (PRIME_NUMBER - b); 
+		b = (PRIME_NUMBER - b);
+		/**** TESTING BC ******/
+		// cout<<"b in subtractModPrime: "<<unsigned(b)<<endl;
+		// cout<<"return value of additionModPrime: "<<unsigned(additionModPrime[a][b])<<endl;
 		return additionModPrime[a][b];
 	}
 }
@@ -609,6 +612,7 @@ void sharesOfBits(vector<smallType> &bit_shares_x_1, vector<smallType> &bit_shar
 
 	if (r_type == "INDEP")
 	{
+		cout<<"Bit shares"<<endl;
 		for (size_t i = 0; i < size; ++i)
 		{
 			for (size_t k = 0; k < BIT_SIZE; ++k)
@@ -616,6 +620,11 @@ void sharesOfBits(vector<smallType> &bit_shares_x_1, vector<smallType> &bit_shar
 				temp = aes_indep->randModPrime();
 				bit_shares_x_1[i*BIT_SIZE + k] = temp;
 				bit_shares_x_2[i*BIT_SIZE + k] = subtractModPrime((x[i] >> (BIT_SIZE - 1 - k) & 1), temp);
+
+				/****** TESTING BC *******/
+				// cout<<"Original value: "<<(x[i] >> (BIT_SIZE - 1 - k) & 1)<<endl;
+				// cout<<"temp (share 1): "<<unsigned(temp)<<endl;
+				// cout<<"Share 2: "<<unsigned(bit_shares_x_2[i*BIT_SIZE + k])<<endl;
 			}
 		}
 	}

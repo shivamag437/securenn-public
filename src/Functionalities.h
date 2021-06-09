@@ -65,6 +65,7 @@ void testMaxPoolDerivative(size_t p_range, size_t q_range, size_t px, size_t py,
 
 //S++ functions
 void testdiv();
+void dummyCompare(vector<myType> &x, vector<myType> &r, vector<myType> &m, size_t size, char op = '>');
 void funcPrivateCompareMPC_2(vector<myType> &x, vector<myType> &r, vector<myType> &m, size_t size, char op = ">");
 void funcSplitFraction(vector<myType> &x, vector<myType> &int_x, vector<myType> &frac_x, size_t size);
 void funcIntegerExp(vector<myType> &x, vector<myType> &c, size_t size);

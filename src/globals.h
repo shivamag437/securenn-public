@@ -26,6 +26,8 @@ using namespace std;
 #define getrandom(min, max) ((rand()%(int)(((max) + 1)-(min)))+ (min))
 #define floatToMyType(a) ((myType)(a * (1 << FLOAT_PRECISION)))
 #define MyTypetofloat(a) (((float) ((int64_t)a) / (1 << FLOAT_PRECISION)))  //S++
+#define intToSmallType(a) ((smallType) (a % EXP_RING))  //S++
+#define smallTypeToInt(a) ((int) ((a>EXP_RING_UL)? (int)(a)-EXP_RING : a) )  //S++
 
 
 //AES and other globals
@@ -40,7 +42,7 @@ using namespace std;
 #define DEBUG_PRINT "SIGNED"
 #define CPP_ASSEMBLY 1
 #define MNIST false
-#define PARALLEL true
+#define PARALLEL false
 #define NO_CORES 4
 
 
@@ -56,9 +58,9 @@ extern int NUM_OF_PARTIES;
 #define PARTY_S 4
 
 #define PRIME_NUMBER 67
-#define EXP_RING 59			//S++
-#define EXP_RING_LL -29		//S++
-#define EXP_RING_UL 29		//S++
+#define EXP_RING 69			//S++
+#define EXP_RING_LL -34		//S++
+#define EXP_RING_UL 34		//S++
 #define FLOAT_PRECISION 13
 #define PRIMARY (partyNum == PARTY_A or partyNum == PARTY_B)
 #define	NON_PRIMARY (partyNum == PARTY_C or partyNum == PARTY_D)

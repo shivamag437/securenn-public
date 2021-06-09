@@ -380,11 +380,132 @@ int main(int argc, char** argv)
 	// funcPrivateCompareMPC_2(x, r, m, size);
 
 	//***** check funcRELUPrime3PC() ****/
-	vector<myType> x(size),r(size);
-	x[0] = floatToMyType(-10);
+
+	initializeMPC();
+	// vector<myType> x(size),r(size), y(size);
+	// vector<smallType> beta(size);
+	// vector<smallType> betaP(size);
+	// vector<smallType> bit_shares(size*BIT_SIZE),bit_shares_x_1(size*BIT_SIZE), bit_shares_x_2(size*BIT_SIZE);
+	// x[0] = floatToMyType(-5);
+	// y[0] = floatToMyType(15);
+	
+	// if(partyNum == PARTY_C){
+	// 	sharesOfBits(bit_shares_x_1, bit_shares_x_2, x, size, "INDEP");
+	// 	sendVector<smallType>(bit_shares_x_1, PARTY_A, size*BIT_SIZE);
+	// 	sendVector<smallType>(bit_shares_x_2, PARTY_B, size*BIT_SIZE);
+		
+	// 	cout<<"x: ";
+	// 	for(int i=0; i<size*BIT_SIZE; i++){
+	// 		cout<<unsigned(additionModPrime[bit_shares_x_1[i]][bit_shares_x_2[i]]);
+	// 	}
+	// 	cout<<endl;
+	// }
+
+	// if(PRIMARY){
+	// 	for(int j = 0; j<9; j++){
+	// 		populateBitsVector(beta, "COMMON", size);
+	// 		for(int i = 0; i<size; i++)	
+	// 			cout<<"Value of beta: "<<unsigned(beta[i])<<endl;
+	// 	}
+	// }
+
+	// if(partyNum == PARTY_A){
+	// 	receiveVector<smallType>(bit_shares, PARTY_C, size*BIT_SIZE);
+	// 	//funcReconstructBit2PC(bit_shares, BIT_SIZE, "x");
+	// 	funcPrivateCompareMPC(bit_shares, y, beta, betaP, size, BIT_SIZE);
+	// }
+
+	// if(partyNum == PARTY_B){
+	// 	receiveVector<smallType>(bit_shares, PARTY_C, size*BIT_SIZE);
+	// 	//funcReconstructBit2PC(bit_shares, BIT_SIZE, "x");
+	// 	funcPrivateCompareMPC(bit_shares, y, beta, betaP, size, BIT_SIZE);
+	// }
+
+	// if(partyNum == PARTY_C){
+	// 	funcPrivateCompareMPC(bit_shares, r, beta, betaP, size, BIT_SIZE);
+	// 	for(int i = 0; i<size; i++)	
+	// 		cout<<"Value of betaP: "<<unsigned(betaP[i])<<endl;
+	// }
+
+
+	// cout<<"value of shares of a: "<<x[0]<<endl;
 	// r[0] = floatToMyType(5);
-	funcComputeMSB3PC(x, r, size);
-	funcReconstruct2PC(r, size, "MSB(-20)");
+	//funcComputeMSB3PC(x, r, size);
+	//funcReconstruct2PC(r, size, "MSB(-20)");
+
+	vector<myType> x(size),r(size), y(size), temp(size);
+	x[0] = floatToMyType(10);
+	r[0] = floatToMyType(0);
+
+	if(PRIMARY){
+		for(int j = 0; j<9; j++){
+			populateRandomVector<myType>(temp, size, "COMMON", "NEGATIVE");
+			if(PRIMARY){
+				funcReconstruct2PC(temp, size, "populate random vectors negative");
+			}
+		}
+	}
+
+	funcIntegerExp(x, y, size);
+
+	cout<<"finished running exponentiation BC"<<endl;
+
+	if(PRIMARY){
+		funcReconstruct2PC(y, size, "Outup of integer exponentiation");
+	}
+
+	funcExponentiation_2(x, y, size);
+	if(PRIMARY){
+		funcReconstruct2PC(y, size, "Outup of exponentiation");
+	}
+	
+	funcTaylorExp(r, y, size);
+	
+	if(PRIMARY){
+		funcReconstruct2PC(y, size, "Outup of taylor exponentiation");
+	}
+
+	funcIntegerExp(x, y, size);
+
+	if(PRIMARY){
+		funcReconstruct2PC(y, size, "Outup of integer exponentiation");
+	}
+
+	funcIntegerExp(x, y, size);
+
+	if(PRIMARY){
+		funcReconstruct2PC(y, size, "Outup of integer exponentiation");
+	}
+
+	funcIntegerExp(x, y, size);
+
+	if(PRIMARY){
+		funcReconstruct2PC(y, size, "Outup of integer exponentiation");
+	}
+
+	funcIntegerExp(x, y, size);
+
+	if(PRIMARY){
+		funcReconstruct2PC(y, size, "Outup of integer exponentiation");
+	}
+
+	funcIntegerExp(x, y, size);
+
+	if(PRIMARY){
+		funcReconstruct2PC(y, size, "Outup of integer exponentiation");
+	}
+
+	funcIntegerExp(x, y, size);
+
+	if(PRIMARY){
+		funcReconstruct2PC(y, size, "Outup of integer exponentiation");
+	}
+
+	funcIntegerExp(x, y, size);
+
+	if(PRIMARY){
+		funcReconstruct2PC(y, size, "Outup of integer exponentiation");
+	}
 
 	//softmax
 	// testsoftmax();

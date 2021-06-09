@@ -62,7 +62,7 @@ void funcReconstruct2PC(const vector<myType> &a, size_t size, string str)
 		receiveVector<myType>(temp, PARTY_B, size);
 		addVectors<myType>(temp, a, temp, size);
 	
-		cout << str << ": ";
+		cout << std::fixed << str << ": ";
 		for (size_t i = 0; i < size; ++i)
 			print_linear(temp[i], "FLOAT");
 		cout << endl;
@@ -538,6 +538,7 @@ void funcPrivateCompareMPC(const vector<smallType> &share_m, const vector<myType
 				}
 				else
 				{
+					//cout<<"R: "<<valueX<<endl;
 					//Single for loop
 					a = 0;
 					for (size_t k = 0; k < dim; ++k)
@@ -548,10 +549,16 @@ void funcPrivateCompareMPC(const vector<smallType> &share_m, const vector<myType
 
 						bit_r = (smallType)((valueX >> (63-k)) & 1);
 
+						//cout<<"i: "<<k<<endl;
+						cout<< unsigned(bit_r);
+						//cout<<unsigned(tempM)<<endl;
+
+						//Calculating w_i and storing in a
 						if (bit_r == 0)
 							a = addModPrime(a, tempM);
 						else
 							a = addModPrime(a, subtractModPrime((partyNum == PARTY_A), tempM));
+						//cout<<"w_i: "<<unsigned(a)<<endl;
 
 						if (!beta[index2])
 						{
@@ -566,10 +573,13 @@ void funcPrivateCompareMPC(const vector<smallType> &share_m, const vector<myType
 							c[index3] = addModPrime(c[index3], tempM);
 						}
 
-						c[index3] = multiplyModPrime(c[index3], aes_common->randNonZeroModPrime());
+						//cout<<"c_i: "<<unsigned(c[index3])<<endl;
+
+						//c[index3] = multiplyModPrime(c[index3], aes_common->randNonZeroModPrime());
 					}
+					cout<<endl;
 				}
-				aes_common->AES_random_shuffle(c, index2*dim, (index2+1)*dim);
+				//aes_common->AES_random_shuffle(c, index2*dim, (index2+1)*dim);
 			}
 		}
 		sendVector<smallType>(c, PARTY, sizeLong);
@@ -583,6 +593,8 @@ void funcPrivateCompareMPC(const vector<smallType> &share_m, const vector<myType
 		receiveVector<smallType>(c1, PARTY_A, sizeLong);
 		receiveVector<smallType>(c2, PARTY_B, sizeLong);
 
+		cout<<"Printing c"<<endl;
+
 		for (size_t index2 = 0; index2 < size; ++index2)
 		{
 			betaPrime[index2] = 0;
@@ -592,9 +604,14 @@ void funcPrivateCompareMPC(const vector<smallType> &share_m, const vector<myType
 				if (addModPrime(c1[index3], c2[index3]) == 0)
 				{
 					betaPrime[index2] = 1;
-					break;
+					cout<<(int)(addModPrime(c1[index3], c2[index3]))<<" ";
+					//break;
+				}
+				else{
+					cout<<(int)(addModPrime(c1[index3], c2[index3]))<<" ";
 				}
 			}
+			cout<<endl;
 		}
 	}
 }
@@ -854,7 +871,14 @@ void funcComputeMSB3PC(const vector<myType> &a, vector<myType> &b, size_t size)
 			r2[i] = aes_indep->randModuloOdd();
 		}
 
-		addModuloOdd<myType, myType>(r1, r2, r, size);	
+		addModuloOdd<myType, myType>(r1, r2, r, size);
+
+		/****Testing BC****/
+		// for(int i = 0; i<size; i++)	
+		// 	cout<< std::fixed<<"Value of r: "<<r[i]<<endl;
+		/****Testing BC****/
+
+
 		// funcReconstruct2PC(c, size, "Value of x");	
 		sharesOfBits(bit_shares_r_1, bit_shares_r_2, r, size, "INDEP");
 		sharesOfLSB(LSB_shares_1, LSB_shares_2, r, size, "INDEP");
@@ -902,13 +926,29 @@ void funcComputeMSB3PC(const vector<myType> &a, vector<myType> &b, size_t size)
 		// receiveVector<myType>(temp, adversary(partyNum), size);
 
 		addModuloOdd<myType, myType>(c, temp, c, size);
+		
+		/****Testing BC****/
+		// for(int i = 0; i<size; i++)	
+		// 	cout<<std::fixed<<"Value of c: "<<c[i]<<endl;
+		/****Testing BC****/
+
 		populateBitsVector(beta, "COMMON", size);
+
+		/****Testing BC****/
+		for(int i = 0; i<size; i++)	
+			cout<<"Value of beta: "<<unsigned(beta[i])<<endl;
+		/****Testing BC****/
 	}
 
 	funcPrivateCompareMPC(bit_shares, c, beta, betaP, size, BIT_SIZE);
 
 	if (partyNum == PARTY_C)
 	{
+		/****Testing BC****/
+		for(int i = 0; i<size; i++)	
+			cout<<"Value of betaP: "<<unsigned(betaP[i])<<endl;
+		/****Testing BC****/
+
 		vector<myType> theta_shares_1(size);
 		vector<myType> theta_shares_2(size);
 
@@ -930,12 +970,15 @@ void funcComputeMSB3PC(const vector<myType> &a, vector<myType> &b, size_t size)
 
 		for (size_t i = 0; i < size; ++i)
 			theta_shares[i] = (1 - 2*beta[i])*theta_shares[i] + j*beta[i];
+		funcReconstruct2PC(theta_shares, size, "gamma");
 
 		for (size_t i = 0; i < size; ++i)
-			LSB_shares[i] = (1 - 2*(c[i] & 1))*LSB_shares[i] + j*(c[i] & 1);		
+			LSB_shares[i] = (1 - 2*(c[i] & 1))*LSB_shares[i] + j*(c[i] & 1);
+		funcReconstruct2PC(LSB_shares, size, "delta");		
 	}
 
 	funcDotProductMPC(theta_shares, LSB_shares, prod, size);
+	funcReconstruct2PC(LSB_shares, size, "delta * gamma");
 
 	if (PRIMARY)
 	{
@@ -2335,24 +2378,132 @@ void funcSplitFraction(vector<myType> &x, vector<myType> &int_x, vector<myType> 
 	}
 }
 
+void funcShareConvertSmallRing(vector<myType> &x, vector<smallType> &c, size_t size){
+
+	vector<myType> comparison(size), frac_x(size);
+
+	//funcPrivateCompareMPC_2(x, EXP_RING_UL, comparison, ">");
+
+	//for(int i=0; i<34; i++)
+
+	//funcPrivateCompareMPC_2(x, EXP, comp1, "<");
+}
+
+void dummyCompare(vector<myType> &x, vector<myType> &r, vector<myType> &m, size_t size, char op = '>'){
+	int output_bit = 0;
+
+	if (partyNum == PARTY_A)
+	{
+		vector<myType> temp(size);
+		receiveVector<myType>(ref(temp), adversary(partyNum), size);
+		vector<myType> v(size, 0);
+		addVectors(x, temp, v, size);
+		for(int i=0; i<size; i++){
+			output_bit = 0;
+
+			//cout<<"outside"<<endl;
+			//cout<<"operator: "<<op<<endl;
+
+			if(op == '>'){
+				//cout<<"Inside"<<endl<<"x: "<<MyTypetofloat(v[i])<<endl<<"r: "<<MyTypetofloat(r[i])<<endl<<"output: "<< (MyTypetofloat(v[i]) > MyTypetofloat(r[i]))<<endl;
+				output_bit = MyTypetofloat(v[i]) > MyTypetofloat(r[i]);
+			}
+
+			if(op == '<'){
+				output_bit = MyTypetofloat(v[i]) < MyTypetofloat(r[i]);
+			}
+
+			if(op == '='){
+				output_bit = MyTypetofloat(v[i]) == MyTypetofloat(r[i]);
+			}
+
+			m[i] = floatToMyType(output_bit);
+		}
+	}
+	if (partyNum==PARTY_B) 
+	{
+		sendVector<myType>(x, adversary(partyNum), size);
+		for(int i=0; i<size; i++){
+			m[i] = floatToMyType(0);
+		}
+	}
+}
+
 void funcIntegerExp(vector<myType> &x, vector<myType> &c, size_t size){
-	// x = .>29 : in this case, make it = 29
+	// x = .>35 : in this case, make it = 35
 
-	// y = .<-29: in this case, make it = -29
+	// y = .<-35: in this case, make it = -35
 
-	// x ^ y = -29< . <29: in this case:
-		// reshare value in the ring Z_59
+	// x ^ y = -35< . <35: in this case:
+		// reshare value in the ring Z_71
 			// private compare for all values, multiply by respective shares of 
 			// the value and add them all up. 
 			// it'll be zero for the values that returned 0 in private compare 
 			// and 1 for only one value
+
+	for(int i=0; i<size; i++){
+		c[i] = 0;
+	}
+
+	//STEP 1
+	vector<myType> comp(size);
+	vector<myType> constant(size);
+	vector<myType> exponential(size);
+	vector<myType> multiple(size);
+	vector<myType> comp_bit(size);
+
+	//checking >34
+	for(int i=0; i<size; i++){
+		constant[i] = floatToMyType(EXP_RING_UL);
+	}
+	dummyCompare(x, constant, comp, size, '>');
+	if(partyNum == PARTY_A){
+		for(int i=0; i<size; i++){
+			exponential[i] = floatToMyType(exp(EXP_RING_UL));
+		}
+	}
+
+	funcDotProductMPC(comp, exponential, multiple, size);
+	addVectors(c, multiple, c, size);
+
+	//checking <-34
+	for(int i=0; i<size; i++){
+		constant[i] = floatToMyType(EXP_RING_LL);
+	}
+	dummyCompare(x, constant, comp, size, '<');
+	if(partyNum == PARTY_A){
+		for(int i=0; i<size; i++){
+			exponential[i] = floatToMyType(exp(EXP_RING_LL));
+		}
+	}
+
+	funcDotProductMPC(comp, exponential, multiple, size);
+	addVectors(c, multiple, c, size);
+
+
+
+	for(int j = -34; j<=34; j++){
+		
+		for(int i=0; i<size; i++){
+			constant[i] = floatToMyType(j);
+		}
+		dummyCompare(x, constant, comp, size, '=');
+		if(partyNum == PARTY_A){
+			for(int i=0; i<size; i++){
+				exponential[i] = floatToMyType(exp(j));
+			}
+		}
+
+		funcDotProductMPC(comp, exponential, multiple, size);
+		addVectors(c, multiple, c, size);
+	}
 
 }
 
 void funcExponentiation_2(vector<myType> &x, vector<myType> &c, size_t size)
 {
 	vector<myType> int_x(size), frac_x(size);
-	vector<myType> exp_int(size), exp_frac(size);
+	vector<myType> exp_int(size, 0), exp_frac(size, 0);
 
 	vector<myType> one(size,floatToMyType(1)), minus_one(size,floatToMyType(-1));
 
@@ -2360,8 +2511,8 @@ void funcExponentiation_2(vector<myType> &x, vector<myType> &c, size_t size)
 
 	vector<myType> comp1(size), compMinus1(size);
 
-	funcPrivateCompareMPC_2(frac_x, one, comp1, "<");
-	funcPrivateCompareMPC_2(frac_x, minus_one, compMinus1, ">");
+	dummyCompare(frac_x, one, comp1, size, '<');
+	dummyCompare(frac_x, minus_one, compMinus1, size, '>');
 
 	for(int i = 0; i<size;i++){
 		//frac_x[i] = frac_x[i] - ((partyNum * floatToMyType(1)) - comp[i]) - ( compMinus1[i] - (partyNum * floatToMyType(1)) );    // frac_x = frac_x - (frac_x > 1) - ( (frac_x > -1) - 1 )
@@ -2370,11 +2521,23 @@ void funcExponentiation_2(vector<myType> &x, vector<myType> &c, size_t size)
 		int_x[i] = int_x[i] - comp1[i] + compMinus1[i];
 	}
 
+	funcIntegerExp(int_x, exp_int, size);
 	funcTaylorExp(frac_x, exp_frac, size);
 
-	funcIntegerExp(int_x, exp_int, size);
+	// funcReconstruct2PC(int_x, size, "Integer part:");
+	// funcReconstruct2PC(frac_x, size, "Fractional part:");
 
-	pointWiseProduct(int_x, frac_x, c, size);
+	if(PRIMARY){
+		funcReconstruct2PC(exp_int, size, "output of integer exponentiation inside exponentiation:");
+	}
+	// funcReconstruct2PC(exp_frac, size, "output of fraction exponentiation:");
+
+	cout<<"share of int: ";
+	for(int i = 0; i<size;i++){
+		cout<<MyTypetofloat(int_x[i])<<endl;
+	}
+
+	funcDotProductMPC(exp_int, exp_frac, c, size);
 
 
 }
